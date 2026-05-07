@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+<meta name="theme-color" content="#f5f1ea" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Skin" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+<title>Skin</title>
+
+<!-- Шрифты: Fraunces (display, антиква с характером) + Inter Tight (body, чище чем обычный Inter) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ============ DESIGN TOKENS ============ */
+:root {
+  --paper: #f5f1ea;
+  --paper-2: #ede7dc;
+  --ink: #1a1815;
+  --ink-soft: #4a463f;
+  --ink-faint: #8a857a;
+  --line: #d8d0c0;
+  --line-soft: #e8e1d2;
+  --accent: #8b3a2e;       /* терракота — для "сейчас" / активного */
+  --accent-soft: #c97a6c;
+  --ok: #4a6741;           /* приглушённый ботанический */
+  --warn: #b07d2a;
+  --danger: #8b2e2e;
+
+  --radius: 4px;
+  --radius-lg: 10px;
+  --shadow: 0 1px 0 rgba(26,24,21,0.04), 0 12px 24px -16px rgba(26,24,21,0.18);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Fraunces', Georgia, serif;
+  font-feature-settings: "ss01", "ss02";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior-y: contain;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+body {
+  max-width: 480px;
+  margin: 0 auto;
+  padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  padding-top: env(safe-area-inset-top);
+}
+
+/* ============ TYPOGRAPHY ============ */
+h1, h2, h3 { font-family: 'Fraunces', serif; font-weight: 400; letter-spacing: -0.01em; }
+h1 { font-size: 28px; line-height: 1.1; }
+h2 { font-size: 20px; line-height: 1.2; }
+h3 { font-size: 15px; line-height: 1.3; font-weight: 500; }
+
+.mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+.label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); }
+.eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+
+/* ============ HEADER ============ */
+.app-header {
+  padding: 24px 20px 16px;
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.app-header .brand {
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink);
+}
+.app-header .phase-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 4px 8px;
+  border-radius: var(--radius);
+}
+
+/* ============ SCREENS ============ */
+.screen { display: none; padding: 20px; padding-bottom: 40px; }
+.screen.active { display: block; animation: fade .3s ease; }
+@keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* ============ CARDS ============ */
+.card {
+  background: #fefcf8;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  margin-bottom: 14px;
+}
+.card.elevated {
+  box-shadow: var(--shadow);
+}
+.card-title {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--line);
+}
+.card-title h2 { font-size: 18px; }
+.card-title .label { font-size: 10px; }
+
+/* ============ TODAY SCREEN ============ */
+.today-hero {
+  margin-bottom: 24px;
+  padding: 24px 4px 0;
+}
+.today-hero .date { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 8px; }
+.today-hero h1 { font-size: 34px; font-style: italic; font-weight: 300; letter-spacing: -0.02em; line-height: 1.05; }
+.today-hero h1 em { font-style: normal; color: var(--accent); }
+.today-hero .sub { margin-top: 6px; color: var(--ink-soft); font-size: 14px; }
+
+.progress-ring {
+  display: flex; align-items: center; gap: 16px;
+  margin-top: 20px; padding: 14px 16px;
+  background: var(--paper-2);
+  border-radius: var(--radius-lg);
+}
+.progress-ring .ring-svg { width: 44px; height: 44px; flex-shrink: 0; }
+.progress-ring .ring-bg { fill: none; stroke: var(--line); stroke-width: 4; }
+.progress-ring .ring-fg { fill: none; stroke: var(--accent); stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset .6s cubic-bezier(.5,0,0,1); }
+.progress-ring .text-block { flex: 1; }
+.progress-ring .text-block .title { font-family: 'Fraunces', serif; font-size: 15px; }
+.progress-ring .text-block .meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-top: 2px; }
+
+/* ============ ROUTINE STEPS ============ */
+.routine-section {
+  margin-bottom: 22px;
+}
+.routine-section .section-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding: 0 4px 10px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+.routine-section .section-head h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-style: italic;
+  font-weight: 300;
+}
+.routine-section .section-head .time-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+}
+
+.step {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--line-soft);
+  cursor: pointer;
+  transition: padding-left .2s;
+}
+.step:last-child { border-bottom: none; }
+.step:active { padding-left: 6px; }
+
+.step .check {
+  width: 22px; height: 22px;
+  border: 1.5px solid var(--ink-soft);
+  border-radius: 50%;
+  flex-shrink: 0; margin-top: 2px;
+  position: relative;
+  transition: all .25s;
+}
+.step.done .check {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.step.done .check::after {
+  content: '';
+  position: absolute;
+  left: 6px; top: 2px;
+  width: 6px; height: 11px;
+  border: solid #fefcf8;
+  border-width: 0 1.5px 1.5px 0;
+  transform: rotate(45deg);
+}
+.step .step-body { flex: 1; }
+.step .step-body .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  margin-bottom: 2px;
+}
+.step .step-body .name {
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  line-height: 1.3;
+}
+.step .step-body .product {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-top: 3px;
+  font-style: italic;
+}
+.step .step-body .note {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-top: 6px;
+  letter-spacing: 0.02em;
+}
+.step.done .step-body .name { color: var(--ink-faint); text-decoration: line-through; text-decoration-thickness: 1px; }
+
+/* ============ CALENDAR ============ */
+.cal-controls {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+}
+.cal-controls button {
+  background: transparent; border: 1px solid var(--line); color: var(--ink);
+  padding: 8px 14px; border-radius: var(--radius);
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  letter-spacing: 0.08em; cursor: pointer;
+}
+.cal-controls .month-label {
+  font-family: 'Fraunces', serif; font-size: 18px; font-style: italic;
+}
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.cal-grid .dow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  text-align: center;
+  padding: 6px 0;
+}
+.cal-day {
+  aspect-ratio: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  background: #fefcf8;
+  cursor: pointer;
+  position: relative;
+  transition: all .15s;
+}
+.cal-day.other { color: var(--ink-faint); opacity: 0.4; }
+.cal-day.today { border-color: var(--accent); border-width: 1.5px; }
+.cal-day.today::before {
+  content: ''; position: absolute; top: 3px; right: 3px;
+  width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
+}
+.cal-day.selected { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.cal-day .indicator {
+  display: flex; gap: 2px; margin-top: 3px;
+}
+.cal-day .indicator span {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--line);
+}
+.cal-day .indicator span.am-done { background: var(--accent); }
+.cal-day .indicator span.pm-done { background: var(--ink); }
+.cal-day.selected .indicator span.am-done { background: var(--accent-soft); }
+.cal-day.selected .indicator span.pm-done { background: var(--paper-2); }
+
+.cal-detail {
+  margin-top: 24px;
+  padding: 16px;
+  background: var(--paper-2);
+  border-radius: var(--radius-lg);
+}
+.cal-detail h3 { margin-bottom: 10px; font-style: italic; font-size: 16px; }
+.cal-detail .stats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin-top: 12px;
+}
+.cal-detail .stat {
+  background: #fefcf8; padding: 10px 12px; border-radius: var(--radius);
+}
+.cal-detail .stat .label { display: block; margin-bottom: 4px; }
+.cal-detail .stat .val { font-family: 'Fraunces', serif; font-size: 18px; }
+
+/* ============ LOG ============ */
+.log-form textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fefcf8;
+  font-family: 'Fraunces', serif;
+  font-size: 15px;
+  color: var(--ink);
+  resize: vertical;
+  outline: none;
+  margin-bottom: 12px;
+}
+.log-form textarea:focus { border-color: var(--accent); }
+
+.log-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  margin-bottom: 12px;
+}
+.log-row .field {
+  background: #fefcf8;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+.log-row .field .label { display: block; margin-bottom: 4px; }
+.log-row .field select {
+  width: 100%; border: none; outline: none; background: transparent;
+  font-family: 'Fraunces', serif; font-size: 15px; color: var(--ink);
+  appearance: none; -webkit-appearance: none;
+}
+
+.tag-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.tag-pills .pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  padding: 6px 10px; border: 1px solid var(--line); border-radius: 20px;
+  background: #fefcf8; color: var(--ink-soft); cursor: pointer;
+  transition: all .15s; letter-spacing: 0.04em;
+}
+.tag-pills .pill.active {
+  background: var(--ink); color: var(--paper); border-color: var(--ink);
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 18px;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  border-radius: var(--radius);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  width: 100%;
+}
+.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
+.btn.danger { background: var(--danger); }
+.btn:active { transform: scale(0.98); }
+
+.log-entries { margin-top: 24px; }
+.log-entry {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.log-entry .meta {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 6px;
+}
+.log-entry .date { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--ink-faint); }
+.log-entry .scores { display: flex; gap: 10px; }
+.log-entry .score { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-soft); }
+.log-entry .score em { color: var(--accent); font-style: normal; }
+.log-entry .text { font-size: 15px; line-height: 1.5; color: var(--ink); }
+.log-entry .tags { margin-top: 6px; display: flex; gap: 4px; flex-wrap: wrap; }
+.log-entry .tags span {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  background: var(--paper-2); padding: 2px 7px; border-radius: 3px;
+  color: var(--ink-soft); letter-spacing: 0.04em;
+}
+
+/* ============ TIMER ============ */
+.timer-presets { display: grid; gap: 10px; margin-bottom: 24px; }
+.timer-preset {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px;
+  background: #fefcf8;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all .15s;
+}
+.timer-preset:active { background: var(--paper-2); }
+.timer-preset.active { border-color: var(--accent); border-width: 1.5px; }
+.timer-preset .duration {
+  font-family: 'Fraunces', serif; font-size: 22px; font-style: italic;
+  width: 50px;
+}
+.timer-preset .info { flex: 1; }
+.timer-preset .info .name { font-family: 'Fraunces', serif; font-size: 15px; }
+.timer-preset .info .desc { font-size: 12px; color: var(--ink-faint); margin-top: 2px; }
+
+.timer-display {
+  text-align: center;
+  padding: 32px 20px;
+  background: #fefcf8;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  margin-bottom: 16px;
+}
+.timer-display .clock {
+  font-family: 'Fraunces', serif;
+  font-size: 64px;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.timer-display .stage {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-top: 8px;
+}
+.timer-display .next {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+.timer-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* Sandwich method protocol */
+.protocol-box {
+  background: var(--paper-2);
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  margin-bottom: 16px;
+}
+.protocol-box h3 { margin-bottom: 10px; font-style: italic; }
+.protocol-box ol { padding-left: 18px; font-size: 13.5px; line-height: 1.7; color: var(--ink-soft); }
+.protocol-box ol li { margin-bottom: 4px; }
+.protocol-box ol li strong { color: var(--ink); }
+
+/* ============ NAV ============ */
+.nav {
+  position: fixed;
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 480px;
+  background: rgba(245, 241, 234, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--line);
+  padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  z-index: 100;
+}
+.nav-btn {
+  background: transparent; border: none; padding: 8px 4px;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  cursor: pointer;
+}
+.nav-btn.active { color: var(--accent); }
+.nav-btn svg { width: 20px; height: 20px; stroke-width: 1.5; }
+
+/* ============ EMPTY STATES ============ */
+.empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--ink-faint);
+  font-style: italic;
+}
+
+/* ============ RULES (decorative) ============ */
+.divider-rule {
+  display: flex; align-items: center; gap: 10px;
+  margin: 28px 0 14px;
+  color: var(--ink-faint);
+}
+.divider-rule::before, .divider-rule::after {
+  content: ''; flex: 1; height: 1px; background: var(--line);
+}
+.divider-rule .label { font-size: 9px; }
+
+/* small ornament */
+.fleuron { color: var(--accent); font-size: 14px; opacity: 0.6; }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="app-header">
+  <div class="brand">Skin · Protocol</div>
+  <div class="phase-badge" id="phaseBadge">Phase 1</div>
+</header>
+
+<!-- ============ SCREEN: TODAY ============ -->
+<section class="screen active" id="screen-today">
+  <div class="today-hero">
+    <div class="date" id="todayDate">—</div>
+    <h1><em id="todayProgress">—</em> <span id="todayHeading">шагов сделано</span></h1>
+    <div class="sub" id="todaySub">Восстановление барьера. День <span id="phaseDay">—</span> из 42.</div>
+
+    <div class="progress-ring">
+      <svg class="ring-svg" viewBox="0 0 44 44">
+        <circle class="ring-bg" cx="22" cy="22" r="18"/>
+        <circle class="ring-fg" id="ringFg" cx="22" cy="22" r="18"
+                stroke-dasharray="113.1" stroke-dashoffset="113.1"
+                transform="rotate(-90 22 22)"/>
+      </svg>
+      <div class="text-block">
+        <div class="title" id="ringTitle">Сегодня</div>
+        <div class="meta" id="ringMeta">— / —</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="routine-section" id="amSection">
+    <div class="section-head">
+      <h2>Утро</h2>
+      <span class="time-badge">AM · 5 мин</span>
+    </div>
+    <div id="amSteps"></div>
+  </div>
+
+  <div class="routine-section" id="pmSection">
+    <div class="section-head">
+      <h2>Вечер</h2>
+      <span class="time-badge">PM · 10 мин</span>
+    </div>
+    <div id="pmSteps"></div>
+  </div>
+
+  <div id="weeklyExtra"></div>
+</section>
+
+<!-- ============ SCREEN: CALENDAR ============ -->
+<section class="screen" id="screen-calendar">
+  <div class="cal-controls">
+    <button id="calPrev">‹ ПРЕД</button>
+    <span class="month-label" id="monthLabel">—</span>
+    <button id="calNext">СЛЕД ›</button>
+  </div>
+  <div class="cal-grid" id="calGrid"></div>
+
+  <div class="cal-detail" id="calDetail" style="display:none;">
+    <h3 id="calDetailTitle">—</h3>
+    <div id="calDetailBody"></div>
+  </div>
+
+  <div class="divider-rule"><span class="label">Phase progression</span></div>
+  <div class="card">
+    <div class="card-title">
+      <h2 style="font-style:italic;">Текущая фаза</h2>
+      <span class="label" id="currentPhaseLabel">Phase 1</span>
+    </div>
+    <div id="phaseInfo"></div>
+  </div>
+</section>
+
+<!-- ============ SCREEN: LOG ============ -->
+<section class="screen" id="screen-log">
+  <h2 style="font-style:italic; margin-bottom:14px;">Заметка о коже</h2>
+
+  <div class="log-form">
+    <div class="log-row">
+      <div class="field">
+        <span class="label">Чувствительность 1–10</span>
+        <select id="logSensitivity">
+          <option value="">—</option>
+          <option>1</option><option>2</option><option>3</option>
+          <option>4</option><option>5</option><option>6</option>
+          <option>7</option><option>8</option><option>9</option><option>10</option>
+        </select>
+      </div>
+      <div class="field">
+        <span class="label">Покраснение 1–10</span>
+        <select id="logRedness">
+          <option value="">—</option>
+          <option>1</option><option>2</option><option>3</option>
+          <option>4</option><option>5</option><option>6</option>
+          <option>7</option><option>8</option><option>9</option><option>10</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="tag-pills" id="logTags">
+      <span class="pill" data-tag="прилив">Прилив</span>
+      <span class="pill" data-tag="шелушение">Шелушение</span>
+      <span class="pill" data-tag="жжение">Жжение</span>
+      <span class="pill" data-tag="зуд">Зуд</span>
+      <span class="pill" data-tag="стянутость">Стянутость</span>
+      <span class="pill" data-tag="новый-продукт">Новый продукт</span>
+      <span class="pill" data-tag="спорт">Спорт</span>
+      <span class="pill" data-tag="стресс">Стресс</span>
+      <span class="pill" data-tag="алкоголь">Алкоголь</span>
+      <span class="pill" data-tag="плохой-сон">Плохой сон</span>
+    </div>
+
+    <textarea id="logText" placeholder="Что заметила? (опционально)"></textarea>
+    <button class="btn" id="saveLog">Сохранить запись</button>
+  </div>
+
+  <div class="divider-rule"><span class="label">История</span></div>
+  <div class="log-entries" id="logEntries"></div>
+
+  <div class="divider-rule"><span class="label">Экспорт</span></div>
+  <button class="btn ghost" id="exportLog">Экспортировать всё в Markdown</button>
+  <div style="height:10px"></div>
+  <button class="btn ghost" id="resetData" style="color:var(--danger); border-color:var(--danger);">Сбросить все данные</button>
+</section>
+
+<!-- ============ SCREEN: TIMER ============ -->
+<section class="screen" id="screen-timer">
+  <h2 style="font-style:italic; margin-bottom:6px;">Таймер</h2>
+  <p style="color:var(--ink-soft); font-size:14px; margin-bottom:20px;">
+    Для пауз между нанесениями — sandwich method и интервалы между активами.
+  </p>
+
+  <div class="timer-display">
+    <div class="clock" id="timerClock">00:00</div>
+    <div class="stage" id="timerStage">Выбери шаг</div>
+    <div class="next" id="timerNext" style="display:none;">—</div>
+  </div>
+
+  <div class="timer-buttons">
+    <button class="btn ghost" id="timerStop">Стоп</button>
+    <button class="btn" id="timerStart">Старт</button>
+  </div>
+
+  <div class="divider-rule"><span class="label">Быстрые таймеры</span></div>
+
+  <div class="timer-presets">
+    <div class="timer-preset" data-min="1">
+      <div class="duration">1<span style="font-size:13px;color:var(--ink-faint)">мин</span></div>
+      <div class="info">
+        <div class="name">Очищение</div>
+        <div class="desc">60 секунд массажа cleansing balm</div>
+      </div>
+    </div>
+    <div class="timer-preset" data-min="2">
+      <div class="duration">2<span style="font-size:13px;color:var(--ink-faint)">мин</span></div>
+      <div class="info">
+        <div class="name">Впитать крем</div>
+        <div class="desc">Перед нанесением SPF</div>
+      </div>
+    </div>
+    <div class="timer-preset" data-min="5">
+      <div class="duration">5<span style="font-size:13px;color:var(--ink-faint)">мин</span></div>
+      <div class="info">
+        <div class="name">Sandwich · шаг 1</div>
+        <div class="desc">Eucerin → пауза → ретиналь</div>
+      </div>
+    </div>
+    <div class="timer-preset" data-min="10">
+      <div class="duration">10<span style="font-size:13px;color:var(--ink-faint)">мин</span></div>
+      <div class="info">
+        <div class="name">Sandwich · шаг 2</div>
+        <div class="desc">Ретиналь → пауза → Cicapair</div>
+      </div>
+    </div>
+    <div class="timer-preset" data-min="15">
+      <div class="duration">15<span style="font-size:13px;color:var(--ink-faint)">мин</span></div>
+      <div class="info">
+        <div class="name">Тканевая маска</div>
+        <div class="desc">Не дольше — ткань заберёт влагу</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="protocol-box" id="sandwichBox">
+    <h3>Sandwich method (для ретиналя)</h3>
+    <ol>
+      <li><strong>Тонер</strong> → подождать пока впитается</li>
+      <li><strong>Eucerin AQUAporin</strong> тонкий слой</li>
+      <li><strong>Пауза 5 минут</strong> (запусти таймер)</li>
+      <li><strong>Celimax Retinal Shot</strong> — горошина</li>
+      <li><strong>Пауза 10 минут</strong> (запусти таймер)</li>
+      <li><strong>Cicapair Repair Cream</strong> поверх</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <button class="nav-btn active" data-screen="today">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+    Сегодня
+  </button>
+  <button class="nav-btn" data-screen="calendar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="18" height="16" rx="1"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
+    Календарь
+  </button>
+  <button class="nav-btn" data-screen="log">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 4h11l3 3v13H5z"/><path d="M9 12h6M9 16h6M9 8h3"/></svg>
+    Лог
+  </button>
+  <button class="nav-btn" data-screen="timer">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="13" r="7"/><path d="M12 13V9M9 3h6M12 6v0"/></svg>
+    Таймер
+  </button>
+</nav>
+
+<script>
+/* ============================================================
+   ДАННЫЕ — РУТИНЫ И ФАЗЫ
+   Source of truth: ROUTINE_CURRENT.md
+   Если изменишь рутину в файле — обнови соответствующие записи здесь.
+   ============================================================ */
+
+const PHASES = [
+  {
+    id: 1,
+    name: 'Phase 1 — Барьер',
+    fullName: 'Восстановление барьера',
+    startDate: '2026-05-07',
+    durationDays: 42, // 6 weeks
+    description: 'Меньше — это больше. Барьер восстанавливается, когда ему не мешают.',
+    rules: [
+      'Никаких кислот, ретиноидов, витамина С в высокой %',
+      'Никаких энзимов, скрабов, щёток',
+      'Никаких эфирных масел и отдушки',
+      'Только тёплая (не горячая) вода'
+    ]
+  },
+  {
+    id: 2,
+    name: 'Phase 2 — Введение AZ',
+    fullName: 'Целевое лечение — азелаинка',
+    startDate: '2026-06-18',
+    durationDays: 42,
+    description: 'Постепенное введение Cos De BAHA AZ Serum. Не раньше Phase 1.',
+    rules: [
+      'AZ Serum: 3 раза в неделю → через день → каждый вечер',
+      'Не смешивать с BHA в один вечер',
+      'Жжение >30 мин = откатиться'
+    ]
+  },
+  {
+    id: 3,
+    name: 'Phase 3 — Ретиналь',
+    fullName: 'Введение ретиналя + поддержка',
+    startDate: '2026-08-13',
+    durationDays: 90,
+    description: 'Только при стабильности 6+ недель в Phase 2.',
+    rules: [
+      'Sandwich method всегда',
+      'Максимум 3 раза в неделю — никогда не ежедневно',
+      'Не в один вечер с AZ Serum'
+    ]
+  }
+];
+
+// AM рутина общая для Phase 1
+const AM_PHASE1 = [
+  { num: '01', name: 'Очищение', product: 'Только вода ИЛИ Bioderma Sensibio Gel Moussant', note: '30 сек массажа · тёплая вода · никогда не горячая' },
+  { num: '02', name: 'Тонер + увлажнение', product: 'Klairs Supple Preparation Unscented', note: 'Похлопать по влажной коже · не вытирать' },
+  { num: '03', name: 'Крем', product: 'Celimax Dual Barrier Cream', note: 'Горошина на всё лицо' },
+  { num: '04', name: 'SPF', product: 'SKIN1004 Sun Serum SPF50+', note: '¼ ч.л. · 2 длины пальца · последний шаг' }
+];
+
+const PM_PHASE1 = [
+  { num: '01', name: 'Первое очищение', product: 'Beauty of Joseon Cleansing Balm', note: 'Только если был SPF/макияж · 60 сек · эмульгировать водой', conditional: true },
+  { num: '02', name: 'Второе очищение', product: 'Bioderma Sensibio Gel Moussant', note: '30 сек · тёплая вода' },
+  { num: '03', name: 'Тонер', product: 'Klairs Supple Preparation Unscented', note: 'Похлопать по влажной коже' },
+  { num: '04', name: 'Сыворотка', product: 'SKIN1004 Centella Ampoule', note: '3-4 капли · похлопать' },
+  { num: '05', name: 'Крем', product: 'Dr.Jart+ Cicapair Repair Cream', note: 'Горошина на всё лицо' },
+  { num: '06', name: 'Точечно', product: 'LRP Cicaplast Baume B5+', note: 'Толстый слой только на шелушение лба', optional: true },
+  { num: '07', name: 'Глаза', product: 'Clinique All About Eyes Rich', note: 'Рисовое зерно по орбитальной кости', optional: true }
+];
+
+// Phase 2 — добавляется AZ серум вечером
+const PM_PHASE2_BASE = [
+  { num: '01', name: 'Первое очищение', product: 'Beauty of Joseon Cleansing Balm', note: '60 сек · эмульгировать', conditional: true },
+  { num: '02', name: 'Второе очищение', product: 'Bioderma / Cicapair Foaming', note: '30 сек' },
+  { num: '03', name: 'Тонер', product: 'Klairs / Celimax Dual Barrier', note: 'Похлопать' },
+  { num: '04', name: 'AZ Serum', product: 'Cos De BAHA Azelaic 10%', note: '1 нажатие · после тонера', azDay: true },
+  { num: '05', name: 'Сыворотка', product: 'SKIN1004 Centella Ampoule', note: '3-4 капли', noAz: true },
+  { num: '06', name: 'Крем', product: 'Dr.Jart+ Cicapair Repair', note: 'Горошина' },
+  { num: '07', name: 'Точечно', product: 'LRP Cicaplast B5+', note: 'Только на проблемные места', optional: true }
+];
+
+// Phase 3 — sandwich method для ретиналя
+const PM_PHASE3_RETINAL = [
+  { num: '01', name: 'Первое очищение', product: 'Beauty of Joseon Cleansing Balm', note: '60 сек', conditional: true },
+  { num: '02', name: 'Второе очищение', product: 'Bioderma / Cicapair Foaming', note: '30 сек' },
+  { num: '03', name: 'Тонер', product: 'Klairs', note: 'Похлопать' },
+  { num: '04', name: 'Eucerin AQUAporin', product: 'Eucerin AQUAporin Active', note: 'Тонкий слой · подождать 5 мин', timer: 5 },
+  { num: '05', name: 'Ретиналь', product: 'Celimax Retinal Shot', note: 'Горошина · подождать 10 мин', timer: 10 },
+  { num: '06', name: 'Cicapair поверх', product: 'Dr.Jart+ Cicapair Repair', note: 'Финальный слой' }
+];
+
+const WEEKLY_EXTRAS = {
+  3: { name: 'Тканевая маска (опц.)', product: 'Darling Skin Fuel или Power Nap', note: '15 мин после очищения · вечер' },
+  0: { name: 'Pruv:me eye patches (опц.)', product: 'Утром перед важным днём', note: '10 мин · можно из холодильника' }
+};
+
+const DAY_NAMES_FULL = ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
+const DAY_NAMES_SHORT = ['ВС','ПН','ВТ','СР','ЧТ','ПТ','СБ'];
+const MONTHS = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+
+/* ============================================================
+   STATE — localStorage
+   ============================================================ */
+const STORAGE_KEYS = {
+  completion: 'skin.completion.v1', // { 'YYYY-MM-DD': { am: [bool], pm: [bool] } }
+  log: 'skin.log.v1', // [{ date, sensitivity, redness, tags, text }]
+  settings: 'skin.settings.v1' // { startDate? }
+};
+
+function loadJSON(key, fallback) {
+  try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
+  catch { return fallback; }
+}
+function saveJSON(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
+
+let completion = loadJSON(STORAGE_KEYS.completion, {});
+let logEntries = loadJSON(STORAGE_KEYS.log, []);
+
+/* ============================================================
+   DATE HELPERS
+   ============================================================ */
+function ymd(d) {
+  const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function parseYmd(s) {
+  const [y,m,d] = s.split('-').map(Number);
+  return new Date(y, m-1, d);
+}
+function diffDays(a, b) {
+  const ms = (parseYmd(b) - parseYmd(a));
+  return Math.floor(ms / 86400000);
+}
+
+function getCurrentPhase(dateStr) {
+  // Возвращает {phase, dayInPhase}
+  let active = PHASES[0];
+  for (const p of PHASES) {
+    if (dateStr >= p.startDate) active = p;
+  }
+  const dayInPhase = diffDays(active.startDate, dateStr) + 1;
+  return { phase: active, dayInPhase };
+}
+
+/* ============================================================
+   ROUTINE BUILDER
+   ============================================================ */
+function getRoutineForDate(dateStr) {
+  const { phase, dayInPhase } = getCurrentPhase(dateStr);
+  const dow = parseYmd(dateStr).getDay();
+  let am = AM_PHASE1, pm = PM_PHASE1;
+
+  if (phase.id === 2) {
+    am = AM_PHASE1;
+    // AZ дни: первая неделя — Пн/Ср/Пт; вторая+ неделя — через день; через 4 недели — каждый день
+    const weekInPhase = Math.floor((dayInPhase - 1) / 7);
+    let isAzDay = false;
+    if (weekInPhase === 0) {
+      isAzDay = (dow === 1 || dow === 3 || dow === 5); // Пн Ср Пт
+    } else if (weekInPhase === 1) {
+      isAzDay = (dayInPhase % 2 === 1); // через день
+    } else {
+      isAzDay = true; // каждый день
+    }
+    pm = PM_PHASE2_BASE.filter(s => isAzDay ? !s.noAz : !s.azDay);
+  } else if (phase.id === 3) {
+    am = AM_PHASE1;
+    // Ретиналь: Пн и Чт первые 4 недели, потом + Сб
+    const weekInPhase = Math.floor((dayInPhase - 1) / 7);
+    let isRetinalDay = false;
+    if (weekInPhase < 2) isRetinalDay = (dow === 4); // 1 раз в неделю
+    else if (weekInPhase < 4) isRetinalDay = (dow === 1 || dow === 4); // 2 раза
+    else isRetinalDay = (dow === 1 || dow === 4 || dow === 6); // 3 раза
+
+    pm = isRetinalDay ? PM_PHASE3_RETINAL : PM_PHASE2_BASE.filter(s => !s.azDay);
+  }
+
+  const extra = WEEKLY_EXTRAS[dow] || null;
+  return { phase, dayInPhase, am, pm, extra, dow };
+}
+
+/* ============================================================
+   COMPLETION
+   ============================================================ */
+function getCompletion(dateStr) {
+  if (!completion[dateStr]) completion[dateStr] = { am: [], pm: [] };
+  return completion[dateStr];
+}
+function toggleStep(dateStr, period, idx) {
+  const c = getCompletion(dateStr);
+  c[period][idx] = !c[period][idx];
+  saveJSON(STORAGE_KEYS.completion, completion);
+}
+
+/* ============================================================
+   RENDER: TODAY
+   ============================================================ */
+function renderToday() {
+  const today = ymd(new Date());
+  const { phase, dayInPhase, am, pm, extra } = getRoutineForDate(today);
+
+  // Header
+  document.getElementById('phaseBadge').textContent = phase.name.split(' — ')[0];
+  document.getElementById('phaseDay').textContent = dayInPhase;
+
+  // Date string
+  const d = new Date();
+  const dateStr = `${DAY_NAMES_FULL[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()].toLowerCase()}`;
+  document.getElementById('todayDate').textContent = dateStr;
+
+  // Progress
+  const c = getCompletion(today);
+  // Reset arrays if length doesn't match (phase changed)
+  if (c.am.length !== am.length) c.am = new Array(am.length).fill(false);
+  if (c.pm.length !== pm.length) c.pm = new Array(pm.length).fill(false);
+
+  const total = am.length + pm.length;
+  const done = c.am.filter(Boolean).length + c.pm.filter(Boolean).length;
+  document.getElementById('todayProgress').textContent = done;
+  document.getElementById('todayHeading').textContent =
+    done === total ? 'из ' + total + ' — готово' :
+    done === 0 ? 'из ' + total + ' шагов' :
+    'из ' + total;
+  document.getElementById('todaySub').innerHTML = `${phase.fullName}. День <span>${dayInPhase}</span> из ${phase.durationDays}.`;
+
+  // Ring
+  const circumference = 2 * Math.PI * 18;
+  const ringFg = document.getElementById('ringFg');
+  const pct = total > 0 ? done / total : 0;
+  ringFg.setAttribute('stroke-dasharray', circumference);
+  ringFg.setAttribute('stroke-dashoffset', circumference * (1 - pct));
+  document.getElementById('ringTitle').textContent = pct === 1 ? 'Все шаги выполнены' : pct === 0 ? 'Начни с утра' : 'Продолжай';
+  document.getElementById('ringMeta').textContent = `${done} / ${total} · ${Math.round(pct*100)}%`;
+
+  // AM steps
+  document.getElementById('amSteps').innerHTML = am.map((s, i) => stepHtml(s, i, c.am[i], 'am')).join('');
+  document.getElementById('pmSteps').innerHTML = pm.map((s, i) => stepHtml(s, i, c.pm[i], 'pm')).join('');
+
+  // Weekly extra
+  const extraEl = document.getElementById('weeklyExtra');
+  if (extra) {
+    extraEl.innerHTML = `
+      <div class="card" style="background:var(--paper-2); border-style:dashed;">
+        <div class="label" style="margin-bottom:6px;">Дополнительно сегодня</div>
+        <h2 style="font-style:italic; font-size:18px; font-weight:300;">${extra.name}</h2>
+        <div style="font-size:13px; color:var(--ink-soft); margin-top:4px; font-style:italic;">${extra.product}</div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink-faint); margin-top:6px;">${extra.note}</div>
+      </div>
+    `;
+  } else {
+    extraEl.innerHTML = '';
+  }
+}
+
+function stepHtml(s, i, done, period) {
+  const conditional = s.conditional ? '<div class="note" style="color:var(--warn);">⏵ только если был SPF/макияж</div>' : '';
+  const optional = s.optional ? '<div class="note" style="color:var(--ink-faint);">⏵ опционально</div>' : '';
+  const timer = s.timer ? `<div class="note" style="color:var(--accent);">⏱ пауза ${s.timer} мин</div>` : '';
+  return `
+    <div class="step ${done?'done':''}" data-period="${period}" data-idx="${i}">
+      <div class="check"></div>
+      <div class="step-body">
+        <div class="num">${s.num}</div>
+        <div class="name">${s.name}</div>
+        <div class="product">${s.product}</div>
+        <div class="note">${s.note}</div>
+        ${conditional}${optional}${timer}
+      </div>
+    </div>
+  `;
+}
+
+/* ============================================================
+   RENDER: CALENDAR
+   ============================================================ */
+let calViewDate = new Date();
+
+function renderCalendar() {
+  const year = calViewDate.getFullYear();
+  const month = calViewDate.getMonth();
+  document.getElementById('monthLabel').textContent = `${MONTHS[month]} ${year}`;
+
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month+1, 0);
+  // Monday = 0
+  let startWeekday = (firstDay.getDay() + 6) % 7;
+  const daysInMonth = lastDay.getDate();
+
+  let html = '';
+  ['ПН','ВТ','СР','ЧТ','ПТ','СБ','ВС'].forEach(d => html += `<div class="dow">${d}</div>`);
+
+  // Prev month tail
+  const prevLastDay = new Date(year, month, 0).getDate();
+  for (let i = startWeekday - 1; i >= 0; i--) {
+    html += `<div class="cal-day other">${prevLastDay - i}</div>`;
+  }
+
+  const todayStr = ymd(new Date());
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dStr = ymd(new Date(year, month, d));
+    const c = completion[dStr] || { am: [], pm: [] };
+    const amDone = c.am.length > 0 && c.am.every(Boolean);
+    const pmDone = c.pm.length > 0 && c.pm.every(Boolean);
+    const isToday = dStr === todayStr;
+    html += `
+      <div class="cal-day ${isToday?'today':''}" data-date="${dStr}">
+        ${d}
+        <div class="indicator">
+          <span class="${amDone?'am-done':''}"></span>
+          <span class="${pmDone?'pm-done':''}"></span>
+        </div>
+      </div>
+    `;
+  }
+
+  // Next month head
+  const totalCells = startWeekday + daysInMonth;
+  const trailing = (7 - (totalCells % 7)) % 7;
+  for (let i = 1; i <= trailing; i++) {
+    html += `<div class="cal-day other">${i}</div>`;
+  }
+
+  document.getElementById('calGrid').innerHTML = html;
+
+  // Phase info
+  const todayPhase = getCurrentPhase(todayStr);
+  document.getElementById('currentPhaseLabel').textContent = todayPhase.phase.name.split(' — ')[0];
+  document.getElementById('phaseInfo').innerHTML = `
+    <h3 style="font-style:italic; font-weight:300; font-size:18px; margin-bottom:6px;">${todayPhase.phase.fullName}</h3>
+    <div class="label" style="margin-bottom:10px;">День ${todayPhase.dayInPhase} из ${todayPhase.phase.durationDays}</div>
+    <p style="font-size:14px; color:var(--ink-soft); line-height:1.5; margin-bottom:12px;">${todayPhase.phase.description}</p>
+    <div style="border-top:1px dashed var(--line); padding-top:12px;">
+      ${todayPhase.phase.rules.map(r => `<div style="font-size:13px; color:var(--ink); padding:4px 0;">— ${r}</div>`).join('')}
+    </div>
+  `;
+}
+
+function showCalDetail(dateStr) {
+  const d = parseYmd(dateStr);
+  const { phase, dayInPhase, am, pm } = getRoutineForDate(dateStr);
+  const c = completion[dateStr] || { am: [], pm: [] };
+  const amDone = c.am.filter(Boolean).length;
+  const pmDone = c.pm.filter(Boolean).length;
+
+  const log = logEntries.find(e => e.date === dateStr);
+
+  document.getElementById('calDetail').style.display = 'block';
+  document.getElementById('calDetailTitle').textContent =
+    `${DAY_NAMES_FULL[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()].toLowerCase()}`;
+  document.getElementById('calDetailBody').innerHTML = `
+    <div class="label" style="margin-bottom:8px;">${phase.name} · день ${dayInPhase}</div>
+    <div class="stats">
+      <div class="stat">
+        <span class="label">Утро</span>
+        <div class="val">${amDone} / ${am.length}</div>
+      </div>
+      <div class="stat">
+        <span class="label">Вечер</span>
+        <div class="val">${pmDone} / ${pm.length}</div>
+      </div>
+    </div>
+    ${log ? `
+      <div style="margin-top:14px; padding-top:14px; border-top:1px dashed var(--line);">
+        <div class="label" style="margin-bottom:6px;">Запись в логе</div>
+        ${log.sensitivity || log.redness ? `
+          <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-soft); margin-bottom:6px;">
+            ${log.sensitivity ? `чувств. ${log.sensitivity}` : ''}${log.sensitivity && log.redness ? ' · ' : ''}${log.redness ? `красн. ${log.redness}` : ''}
+          </div>
+        ` : ''}
+        ${log.tags?.length ? `<div style="margin-bottom:6px;">${log.tags.map(t => `<span style="font-family:'JetBrains Mono',monospace; font-size:10px; background:#fefcf8; padding:2px 7px; border-radius:3px; margin-right:4px;">${t}</span>`).join('')}</div>` : ''}
+        ${log.text ? `<div style="font-size:14px; line-height:1.5;">${log.text}</div>` : ''}
+      </div>
+    ` : ''}
+  `;
+}
+
+/* ============================================================
+   RENDER: LOG
+   ============================================================ */
+function renderLog() {
+  const sorted = [...logEntries].sort((a,b) => b.date.localeCompare(a.date));
+  const el = document.getElementById('logEntries');
+  if (!sorted.length) {
+    el.innerHTML = '<div class="empty">Пока нет записей.</div>';
+    return;
+  }
+  el.innerHTML = sorted.map(e => {
+    const d = parseYmd(e.date);
+    const dateStr = `${d.getDate()} ${MONTHS[d.getMonth()].toLowerCase()} · ${DAY_NAMES_SHORT[d.getDay()]}`;
+    return `
+      <div class="log-entry">
+        <div class="meta">
+          <span class="date">${dateStr}</span>
+          <span class="scores">
+            ${e.sensitivity ? `<span class="score">чувств. <em>${e.sensitivity}</em></span>` : ''}
+            ${e.redness ? `<span class="score">красн. <em>${e.redness}</em></span>` : ''}
+          </span>
+        </div>
+        ${e.text ? `<div class="text">${escapeHtml(e.text)}</div>` : ''}
+        ${e.tags?.length ? `<div class="tags">${e.tags.map(t => `<span>${t}</span>`).join('')}</div>` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ============================================================
+   TIMER
+   ============================================================ */
+let timerState = { running: false, endsAt: null, durationMin: 0, intervalId: null };
+
+function startTimer(min) {
+  stopTimer(false);
+  timerState.durationMin = min;
+  timerState.endsAt = Date.now() + min * 60 * 1000;
+  timerState.running = true;
+  timerState.intervalId = setInterval(updateTimerDisplay, 250);
+  document.getElementById('timerStage').textContent = `Идёт · ${min} мин`;
+  document.getElementById('timerNext').style.display = 'none';
+  updateTimerDisplay();
+}
+
+function stopTimer(silent = true) {
+  if (timerState.intervalId) clearInterval(timerState.intervalId);
+  timerState.running = false;
+  timerState.intervalId = null;
+  if (!silent) {
+    document.getElementById('timerClock').textContent = '00:00';
+    document.getElementById('timerStage').textContent = 'Остановлен';
+    document.getElementById('timerNext').style.display = 'none';
+  }
+}
+
+function updateTimerDisplay() {
+  if (!timerState.running) return;
+  const remaining = Math.max(0, timerState.endsAt - Date.now());
+  const totalSec = Math.ceil(remaining / 1000);
+  const m = Math.floor(totalSec / 60);
+  const s = totalSec % 60;
+  document.getElementById('timerClock').textContent =
+    `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  if (remaining <= 0) {
+    timerDone();
+  }
+}
+
+function timerDone() {
+  stopTimer(true);
+  document.getElementById('timerClock').textContent = '00:00';
+  document.getElementById('timerStage').textContent = 'Готово';
+  document.getElementById('timerNext').style.display = 'block';
+  document.getElementById('timerNext').textContent = 'Время вышло. Можно наносить следующий шаг.';
+  // Vibration if supported
+  if (navigator.vibrate) navigator.vibrate([200,100,200,100,400]);
+  // Sound
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value = 600; g.gain.value = 0.15;
+    o.start(); setTimeout(() => { o.frequency.value = 800; }, 200);
+    setTimeout(() => { o.stop(); ctx.close(); }, 500);
+  } catch(e) {}
+}
+
+/* ============================================================
+   EVENT BINDINGS
+   ============================================================ */
+
+// Nav
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.screen;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(`screen-${target}`).classList.add('active');
+    btn.classList.add('active');
+    if (target === 'today') renderToday();
+    if (target === 'calendar') renderCalendar();
+    if (target === 'log') renderLog();
+    window.scrollTo(0, 0);
+  });
+});
+
+// Steps (delegated)
+document.addEventListener('click', (e) => {
+  const step = e.target.closest('.step');
+  if (step) {
+    const period = step.dataset.period;
+    const idx = parseInt(step.dataset.idx);
+    toggleStep(ymd(new Date()), period, idx);
+    renderToday();
+  }
+});
+
+// Calendar nav
+document.getElementById('calPrev').addEventListener('click', () => {
+  calViewDate.setMonth(calViewDate.getMonth() - 1);
+  document.getElementById('calDetail').style.display = 'none';
+  renderCalendar();
+});
+document.getElementById('calNext').addEventListener('click', () => {
+  calViewDate.setMonth(calViewDate.getMonth() + 1);
+  document.getElementById('calDetail').style.display = 'none';
+  renderCalendar();
+});
+
+// Calendar day click
+document.addEventListener('click', (e) => {
+  const day = e.target.closest('.cal-day');
+  if (day && day.dataset.date) {
+    document.querySelectorAll('.cal-day').forEach(d => d.classList.remove('selected'));
+    day.classList.add('selected');
+    showCalDetail(day.dataset.date);
+  }
+});
+
+// Log tags
+document.querySelectorAll('#logTags .pill').forEach(pill => {
+  pill.addEventListener('click', () => pill.classList.toggle('active'));
+});
+
+// Save log
+document.getElementById('saveLog').addEventListener('click', () => {
+  const date = ymd(new Date());
+  const sensitivity = document.getElementById('logSensitivity').value;
+  const redness = document.getElementById('logRedness').value;
+  const text = document.getElementById('logText').value.trim();
+  const tags = [...document.querySelectorAll('#logTags .pill.active')].map(p => p.dataset.tag);
+
+  if (!sensitivity && !redness && !text && tags.length === 0) {
+    alert('Заполни хотя бы одно поле перед сохранением.');
+    return;
+  }
+
+  // Replace existing entry for today, or append
+  const existing = logEntries.findIndex(e => e.date === date);
+  const entry = { date, sensitivity, redness, tags, text, ts: Date.now() };
+  if (existing >= 0) logEntries[existing] = entry;
+  else logEntries.push(entry);
+
+  saveJSON(STORAGE_KEYS.log, logEntries);
+
+  // Reset form
+  document.getElementById('logSensitivity').value = '';
+  document.getElementById('logRedness').value = '';
+  document.getElementById('logText').value = '';
+  document.querySelectorAll('#logTags .pill').forEach(p => p.classList.remove('active'));
+
+  renderLog();
+});
+
+// Export log to markdown
+document.getElementById('exportLog').addEventListener('click', () => {
+  const sorted = [...logEntries].sort((a,b) => a.date.localeCompare(b.date));
+  let md = `# SKIN LOG EXPORT\n\nДата экспорта: ${ymd(new Date())}\nЗаписей: ${sorted.length}\n\n---\n\n`;
+  for (const e of sorted) {
+    md += `## ${e.date}\n\n`;
+    if (e.sensitivity) md += `- Чувствительность: ${e.sensitivity}/10\n`;
+    if (e.redness) md += `- Покраснение: ${e.redness}/10\n`;
+    if (e.tags?.length) md += `- Теги: ${e.tags.join(', ')}\n`;
+    if (e.text) md += `\n${e.text}\n`;
+    md += `\n---\n\n`;
+  }
+  // Also include completion stats
+  md += `## Статистика рутины\n\n`;
+  const days = Object.keys(completion).sort();
+  for (const d of days) {
+    const c = completion[d];
+    const amDone = c.am.filter(Boolean).length;
+    const pmDone = c.pm.filter(Boolean).length;
+    if (amDone || pmDone) {
+      md += `- ${d}: AM ${amDone}/${c.am.length}, PM ${pmDone}/${c.pm.length}\n`;
+    }
+  }
+
+  const blob = new Blob([md], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `skin-log-${ymd(new Date())}.md`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+// Reset data
+document.getElementById('resetData').addEventListener('click', () => {
+  if (!confirm('Удалить все локальные данные (рутина + лог)? Это нельзя отменить.')) return;
+  localStorage.removeItem(STORAGE_KEYS.completion);
+  localStorage.removeItem(STORAGE_KEYS.log);
+  completion = {};
+  logEntries = [];
+  renderToday();
+  renderLog();
+  alert('Данные сброшены.');
+});
+
+// Timer presets
+document.querySelectorAll('.timer-preset').forEach(p => {
+  p.addEventListener('click', () => {
+    document.querySelectorAll('.timer-preset').forEach(x => x.classList.remove('active'));
+    p.classList.add('active');
+    const min = parseInt(p.dataset.min);
+    document.getElementById('timerClock').textContent = `${String(min).padStart(2,'0')}:00`;
+    document.getElementById('timerStage').textContent = `Готов · ${min} мин`;
+    document.getElementById('timerNext').style.display = 'none';
+    timerState.durationMin = min;
+  });
+});
+
+document.getElementById('timerStart').addEventListener('click', () => {
+  if (!timerState.durationMin) { alert('Сначала выбери таймер ниже.'); return; }
+  startTimer(timerState.durationMin);
+});
+
+document.getElementById('timerStop').addEventListener('click', () => {
+  stopTimer(false);
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+renderToday();
+
+// Service worker for PWA install (минимальный — без push)
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+// Re-render today если день сменился пока приложение было открыто
+let lastDate = ymd(new Date());
+setInterval(() => {
+  const now = ymd(new Date());
+  if (now !== lastDate) {
+    lastDate = now;
+    if (document.getElementById('screen-today').classList.contains('active')) renderToday();
+  }
+}, 60000);
+</script>
+</body>
+</html>
