@@ -1,7 +1,7 @@
 // Минимальный Service Worker — нужен только чтобы PWA можно было установить
 // и приложение работало офлайн. Никаких push-уведомлений.
 
-const CACHE_NAME = 'skin-protocol-v1';
+const CACHE_NAME = 'skin-protocol-v2';
 const ASSETS = [
   './',
   './index.html',
