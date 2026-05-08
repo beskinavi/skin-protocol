@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
-<meta name="theme-color" content="#f5f1ea" />
+<meta name="theme-color" content="#fafaf7" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <meta name="apple-mobile-web-app-title" content="Skin" />
@@ -11,39 +11,58 @@
 <link rel="apple-touch-icon" href="icon-192.png" />
 <title>Skin</title>
 
-<!-- Шрифты: Fraunces (display, антиква с характером) + Inter Tight (body, чище чем обычный Inter) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
-/* ============ DESIGN TOKENS ============ */
 :root {
-  --paper: #f5f1ea;
-  --paper-2: #ede7dc;
-  --ink: #1a1815;
-  --ink-soft: #4a463f;
-  --ink-faint: #8a857a;
-  --line: #d8d0c0;
-  --line-soft: #e8e1d2;
-  --accent: #8b3a2e;       /* терракота — для "сейчас" / активного */
-  --accent-soft: #c97a6c;
-  --ok: #4a6741;           /* приглушённый ботанический */
-  --warn: #b07d2a;
-  --danger: #8b2e2e;
+  --bg: #fafaf7;
+  --bg-2: #f0eee7;
+  --surface: #ffffff;
+  --ink: #1a2620;
+  --ink-soft: #4a5d54;
+  --ink-faint: #8a9a91;
+  --line: #e4e2d9;
+  --line-soft: #efede5;
 
-  --radius: 4px;
-  --radius-lg: 10px;
-  --shadow: 0 1px 0 rgba(26,24,21,0.04), 0 12px 24px -16px rgba(26,24,21,0.18);
+  --green: #2E8B57;
+  --green-bright: #00A877;
+  --green-dark: #1f6940;
+  --green-soft: #a8d4be;
+  --green-tint: #e6f4ec;
+  --green-faint: #f3faf6;
+
+  --warn: #b07d2a;
+  --warn-bg: #fdf3d8;
+  --danger: #c14d3e;
+  --danger-bg: #fde8e3;
+  --ok: #2E8B57;
+
+  /* Product category colors — pastel placeholder squares */
+  --cat-cleanser: #fff1d9;
+  --cat-toner: #e0f0fb;
+  --cat-serum: #d8e8f7;
+  --cat-cream: #e6f4ec;
+  --cat-spf: #fff5c2;
+  --cat-active: #f8e1e6;
+  --cat-eye: #f0e6f8;
+  --cat-spot: #ffe8d6;
+
+  --radius: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --shadow-sm: 0 1px 2px rgba(26,38,32,0.04);
+  --shadow: 0 2px 8px rgba(26,38,32,0.06);
+  --shadow-lg: 0 6px 24px rgba(26,38,32,0.08);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
 html, body {
-  background: var(--paper);
+  background: var(--bg);
   color: var(--ink);
-  font-family: 'Fraunces', Georgia, serif;
-  font-feature-settings: "ss01", "ss02";
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overscroll-behavior-y: contain;
@@ -54,222 +73,838 @@ html, body {
 body {
   max-width: 480px;
   margin: 0 auto;
-  padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  padding-bottom: calc(78px + env(safe-area-inset-bottom));
   padding-top: env(safe-area-inset-top);
 }
 
-/* ============ TYPOGRAPHY ============ */
-h1, h2, h3 { font-family: 'Fraunces', serif; font-weight: 400; letter-spacing: -0.01em; }
-h1 { font-size: 28px; line-height: 1.1; }
+h1, h2, h3 {
+  font-family: 'DM Sans', 'Inter', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+h1 { font-size: 28px; line-height: 1.15; }
 h2 { font-size: 20px; line-height: 1.2; }
-h3 { font-size: 15px; line-height: 1.3; font-weight: 500; }
+h3 { font-size: 16px; line-height: 1.3; font-weight: 600; }
 
-.mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
-.label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); }
-.eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+.label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
 
-/* ============ HEADER ============ */
+/* HEADER */
 .app-header {
-  padding: 24px 20px 16px;
-  border-bottom: 1px solid var(--line-soft);
+  padding: 22px 20px 14px;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
 }
-.app-header .brand {
-  font-size: 13px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  font-family: 'JetBrains Mono', monospace;
+.app-header .greeting {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--ink);
 }
-.app-header .phase-badge {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent);
-  border: 1px solid var(--accent);
-  padding: 4px 8px;
-  border-radius: var(--radius);
+.app-header .greeting span {
+  color: var(--green);
 }
-
-/* ============ SCREENS ============ */
-.screen { display: none; padding: 20px; padding-bottom: 40px; }
-.screen.active { display: block; animation: fade .3s ease; }
-@keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-
-/* ============ CARDS ============ */
-.card {
-  background: #fefcf8;
-  border: 1px solid var(--line-soft);
-  border-radius: var(--radius-lg);
-  padding: 18px;
-  margin-bottom: 14px;
-}
-.card.elevated {
-  box-shadow: var(--shadow);
-}
-.card-title {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 14px;
-  padding-bottom: 12px;
-  border-bottom: 1px dashed var(--line);
-}
-.card-title h2 { font-size: 18px; }
-.card-title .label { font-size: 10px; }
-
-/* ============ TODAY SCREEN ============ */
-.today-hero {
-  margin-bottom: 24px;
-  padding: 24px 4px 0;
-}
-.today-hero .date { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 8px; }
-.today-hero h1 { font-size: 34px; font-style: italic; font-weight: 300; letter-spacing: -0.02em; line-height: 1.05; }
-.today-hero h1 em { font-style: normal; color: var(--accent); }
-.today-hero .sub { margin-top: 6px; color: var(--ink-soft); font-size: 14px; }
-
-.progress-ring {
-  display: flex; align-items: center; gap: 16px;
-  margin-top: 20px; padding: 14px 16px;
-  background: var(--paper-2);
-  border-radius: var(--radius-lg);
-}
-.progress-ring .ring-svg { width: 44px; height: 44px; flex-shrink: 0; }
-.progress-ring .ring-bg { fill: none; stroke: var(--line); stroke-width: 4; }
-.progress-ring .ring-fg { fill: none; stroke: var(--accent); stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset .6s cubic-bezier(.5,0,0,1); }
-.progress-ring .text-block { flex: 1; }
-.progress-ring .text-block .title { font-family: 'Fraunces', serif; font-size: 15px; }
-.progress-ring .text-block .meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-top: 2px; }
-
-/* ============ ROUTINE STEPS ============ */
-.routine-section {
-  margin-bottom: 22px;
-}
-.routine-section .section-head {
-  display: flex; align-items: baseline; justify-content: space-between;
-  padding: 0 4px 10px;
-  margin-bottom: 8px;
-  border-bottom: 1px solid var(--line);
-}
-.routine-section .section-head h2 {
-  font-family: 'Fraunces', serif;
-  font-size: 22px;
-  font-style: italic;
-  font-weight: 300;
-}
-.routine-section .section-head .time-badge {
-  font-family: 'JetBrains Mono', monospace;
+.app-header .phase-pill {
+  background: var(--green-tint);
+  color: var(--green-dark);
   font-size: 11px;
-  letter-spacing: 0.14em;
-  color: var(--ink-faint);
-}
-
-.step {
-  display: flex; align-items: flex-start; gap: 14px;
-  padding: 14px 4px;
-  border-bottom: 1px solid var(--line-soft);
-  cursor: pointer;
-  transition: padding-left .2s;
-}
-.step:last-child { border-bottom: none; }
-.step:active { padding-left: 6px; }
-
-.step .check {
-  width: 22px; height: 22px;
-  border: 1.5px solid var(--ink-soft);
-  border-radius: 50%;
-  flex-shrink: 0; margin-top: 2px;
-  position: relative;
-  transition: all .25s;
-}
-.step.done .check {
-  background: var(--accent);
-  border-color: var(--accent);
-}
-.step.done .check::after {
-  content: '';
-  position: absolute;
-  left: 6px; top: 2px;
-  width: 6px; height: 11px;
-  border: solid #fefcf8;
-  border-width: 0 1.5px 1.5px 0;
-  transform: rotate(45deg);
-}
-.step .step-body { flex: 1; }
-.step .step-body .num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: var(--ink-faint);
-  margin-bottom: 2px;
-}
-.step .step-body .name {
-  font-family: 'Fraunces', serif;
-  font-size: 16px;
-  line-height: 1.3;
-}
-.step .step-body .product {
-  font-size: 13px;
-  color: var(--ink-soft);
-  margin-top: 3px;
-  font-style: italic;
-}
-.step .step-body .note {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--ink-faint);
-  margin-top: 6px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 100px;
   letter-spacing: 0.02em;
 }
-.step.done .step-body .name { color: var(--ink-faint); text-decoration: line-through; text-decoration-thickness: 1px; }
 
-/* ============ CALENDAR ============ */
+.screen { display: none; padding: 0 20px 40px; }
+.screen.active { display: block; animation: fade .3s ease; }
+@keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+/* ============================================================
+   TODAY HERO
+   ============================================================ */
+.hero-card {
+  background: linear-gradient(135deg, var(--green) 0%, var(--green-bright) 100%);
+  border-radius: var(--radius-xl);
+  padding: 22px;
+  margin-bottom: 16px;
+  color: white;
+  box-shadow: var(--shadow);
+}
+.hero-card .date {
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.85;
+  letter-spacing: 0.02em;
+  margin-bottom: 8px;
+}
+.hero-card .title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.hero-card .progress-text h1 {
+  font-size: 30px;
+  color: white;
+  margin-bottom: 4px;
+}
+.hero-card .progress-text .sub {
+  font-size: 13px;
+  opacity: 0.9;
+  font-weight: 500;
+}
+.hero-card .ring-svg { width: 64px; height: 64px; flex-shrink: 0; }
+.hero-card .ring-bg { fill: none; stroke: rgba(255,255,255,0.25); stroke-width: 4; }
+.hero-card .ring-fg { fill: none; stroke: white; stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset .6s cubic-bezier(.5,0,0,1); }
+.hero-card .ring-text {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  fill: white;
+  font-size: 14px;
+}
+
+/* ============================================================
+   WARNINGS
+   ============================================================ */
+.warning-banner {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--warn-bg);
+  border: 1px solid #e9c98a;
+  border-radius: var(--radius-lg);
+  margin-bottom: 12px;
+}
+.warning-banner.danger {
+  background: var(--danger-bg);
+  border-color: #e8a596;
+}
+.warning-banner .icon {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--warn);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+  font-family: 'DM Sans', sans-serif;
+}
+.warning-banner.danger .icon { background: var(--danger); }
+.warning-banner .body .ttl {
+  font-weight: 600; font-size: 14px;
+  margin-bottom: 2px;
+}
+.warning-banner .body .text {
+  font-size: 13px; line-height: 1.45; color: var(--ink-soft);
+}
+
+/* ============================================================
+   PHOTO WIDGET
+   ============================================================ */
+.photo-widget {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: transform .15s;
+}
+.photo-widget:active { transform: scale(0.99); }
+.photo-widget.due-today {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: white;
+}
+.photo-widget .icon-box {
+  width: 44px; height: 44px;
+  background: var(--green-tint);
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.photo-widget.due-today .icon-box { background: var(--green); }
+.photo-widget .icon-box svg { width: 22px; height: 22px; stroke: var(--green); fill: none; stroke-width: 2; }
+.photo-widget.due-today .icon-box svg { stroke: white; }
+.photo-widget .text-block { flex: 1; }
+.photo-widget .text-block .ttl {
+  font-weight: 600; font-size: 15px;
+  margin-bottom: 2px;
+}
+.photo-widget .text-block .meta {
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+.photo-widget.due-today .text-block .meta { color: rgba(255,255,255,0.7); }
+.photo-widget .arrow {
+  font-size: 20px;
+  color: var(--ink-faint);
+}
+.photo-widget.due-today .arrow { color: white; }
+
+/* ============================================================
+   AM/PM TOGGLE
+   ============================================================ */
+.routine-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  margin-top: 24px;
+}
+.routine-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+}
+.toggle {
+  display: inline-flex;
+  background: var(--ink);
+  border-radius: 100px;
+  padding: 4px;
+  position: relative;
+  cursor: pointer;
+}
+.toggle .knob {
+  width: 36px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 100px;
+  transition: all .25s ease;
+  position: relative;
+  z-index: 2;
+}
+.toggle .knob.active {
+  background: white;
+}
+.toggle .knob svg {
+  width: 18px; height: 18px;
+  stroke: white; fill: none; stroke-width: 2;
+  transition: stroke .25s;
+}
+.toggle .knob.active svg { stroke: var(--ink); }
+
+/* ============================================================
+   ROUTINE STEPS
+   ============================================================ */
+.steps-list {
+  position: relative;
+  padding-left: 0;
+}
+
+.step-row {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.step-row .step-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.step-row .num-circle {
+  width: 28px; height: 28px;
+  background: var(--ink);
+  color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  z-index: 2;
+  flex-shrink: 0;
+}
+.step-row .num-circle.done {
+  background: var(--green);
+}
+.step-row .connector {
+  position: absolute;
+  top: 28px; bottom: -14px;
+  left: 50%;
+  width: 1.5px;
+  background: var(--line);
+  z-index: 1;
+}
+.step-row:last-child .connector { display: none; }
+
+.step-row .step-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  display: grid;
+  grid-template-columns: 80px 1fr 44px;
+  align-items: center;
+  border: 1px solid var(--line-soft);
+  overflow: hidden;
+  transition: all .2s;
+  cursor: pointer;
+}
+.step-row .step-card:active { transform: scale(0.99); }
+.step-row.done .step-card {
+  background: var(--bg-2);
+  border-color: var(--line-soft);
+}
+.step-row.done .step-card .step-name { text-decoration: line-through; color: var(--ink-faint); }
+
+.step-card .placeholder {
+  height: 100%;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--ink-soft);
+  background: var(--cat-cream);
+  letter-spacing: -0.02em;
+  position: relative;
+}
+.step-card .placeholder.cleanser { background: var(--cat-cleanser); }
+.step-card .placeholder.toner { background: var(--cat-toner); }
+.step-card .placeholder.serum { background: var(--cat-serum); }
+.step-card .placeholder.cream { background: var(--cat-cream); }
+.step-card .placeholder.spf { background: var(--cat-spf); }
+.step-card .placeholder.active { background: var(--cat-active); }
+.step-card .placeholder.eye { background: var(--cat-eye); }
+.step-card .placeholder.spot { background: var(--cat-spot); }
+
+.step-card .placeholder .icon {
+  font-size: 28px;
+  opacity: 0.6;
+}
+
+.step-card .step-info {
+  padding: 12px 12px;
+  min-width: 0;
+}
+.step-card .step-info .step-name {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.25;
+  margin-bottom: 4px;
+  display: flex; align-items: center; gap: 6px;
+  flex-wrap: wrap;
+}
+.step-card .step-info .active-tag {
+  font-size: 9px;
+  font-weight: 700;
+  background: var(--green);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.step-card .step-info .step-product {
+  font-size: 12px;
+  color: var(--ink-soft);
+  line-height: 1.3;
+}
+.step-card .step-info .step-note {
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-top: 4px;
+  line-height: 1.3;
+}
+.step-card .step-info .step-note.warn { color: var(--warn); }
+.step-card .step-info .step-note.accent { color: var(--green); }
+
+.step-card .check-btn {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  background: white;
+  margin-right: 12px;
+  position: relative;
+  flex-shrink: 0;
+}
+.step-row.done .check-btn {
+  background: var(--green);
+  border-color: var(--green);
+}
+.step-row.done .check-btn::after {
+  content: '';
+  position: absolute;
+  left: 7px; top: 4px;
+  width: 7px; height: 12px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* USAGE BARS — mini timeline */
+.usage-bars {
+  display: flex; gap: 3px; margin-top: 6px; align-items: center;
+}
+.usage-bars .day-label {
+  font-size: 9px;
+  color: var(--ink-faint);
+  margin-right: 4px;
+  font-weight: 500;
+}
+.usage-bars .bar {
+  width: 11px; height: 11px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: white;
+}
+.usage-bars .bar.used { background: var(--green); border-color: var(--green); }
+.usage-bars .bar.today { border-width: 1.5px; border-color: var(--ink); }
+.usage-bars .bar.today.used { border-color: var(--green); background: var(--green); }
+
+/* ============================================================
+   PILLS / VITAMINS SECTION
+   ============================================================ */
+.pills-section {
+  margin-top: 28px;
+}
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+}
+.section-title h2 {
+  font-size: 20px;
+  font-weight: 700;
+}
+.section-title .meta-info {
+  font-size: 12px;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+
+.pill-card {
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  padding: 14px 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform .15s;
+}
+.pill-card:active { transform: scale(0.99); }
+.pill-card.done {
+  background: var(--green-faint);
+  border-color: var(--green-soft);
+}
+.pill-card.skip-day {
+  opacity: 0.5;
+}
+.pill-card .pill-icon {
+  width: 40px; height: 40px;
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+  background: var(--green-tint);
+}
+.pill-card .pill-info {
+  flex: 1;
+  min-width: 0;
+}
+.pill-card .pill-name {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pill-card.done .pill-name {
+  text-decoration: line-through;
+  color: var(--ink-faint);
+}
+.pill-card .pill-schedule {
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+.pill-card .pill-warning {
+  font-size: 11px;
+  color: var(--warn);
+  margin-top: 2px;
+}
+.pill-card .pill-check {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  background: white;
+  position: relative;
+  flex-shrink: 0;
+}
+.pill-card.done .pill-check {
+  background: var(--green);
+  border-color: var(--green);
+}
+.pill-card.done .pill-check::after {
+  content: '';
+  position: absolute;
+  left: 6px; top: 3px;
+  width: 6px; height: 11px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.pill-card.skip-day .pill-check {
+  border-style: dashed;
+  background: var(--bg-2);
+}
+
+/* ============================================================
+   COMPACT TRACKERS (sport, office on Today screen)
+   ============================================================ */
+.tracker-section {
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  padding: 14px 14px;
+  margin-top: 10px;
+}
+.tracker-section .tracker-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.tracker-section .tracker-title {
+  display: flex; align-items: center; gap: 8px;
+}
+.tracker-section .tracker-title h3 {
+  font-size: 14px;
+  font-weight: 600;
+}
+.tracker-section .tracker-emoji {
+  font-size: 16px;
+}
+.tracker-section .tracker-meta {
+  font-size: 11px;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+
+.chip-row {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.chip-row .chip {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  background: white;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all .15s;
+  user-select: none;
+}
+.chip-row .chip.active {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+}
+
+/* ============================================================
+   TRACKER GROUPS (collapsible, in Trackers tab)
+   ============================================================ */
+.tracker-group {
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.tracker-group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: background .15s;
+  user-select: none;
+}
+.tracker-group-head:active {
+  background: var(--bg-2);
+}
+.tracker-group-head .tg-title {
+  display: flex; align-items: center; gap: 10px;
+}
+.tracker-group-head .tg-emoji {
+  font-size: 20px;
+}
+.tracker-group-head h3 {
+  font-size: 16px;
+  font-weight: 600;
+}
+.tracker-group-head .tg-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink-faint);
+  font-size: 12px;
+  font-weight: 500;
+}
+.tracker-group-head .tg-meta span {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  color: var(--green);
+  font-size: 13px;
+}
+.tracker-group-head .tg-chevron {
+  width: 18px; height: 18px;
+  stroke-width: 2;
+  transition: transform .25s;
+  color: var(--ink-faint);
+}
+.tracker-group.collapsed .tg-chevron {
+  transform: rotate(-90deg);
+}
+.tracker-group-body {
+  padding: 0 14px 14px;
+  border-top: 1px solid var(--line-soft);
+  padding-top: 14px;
+}
+.tracker-group.collapsed .tracker-group-body {
+  display: none;
+}
+
+/* ============================================================
+   ACTIVITY HISTORY (sport / office grids)
+   ============================================================ */
+.activity-summary {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.activity-summary .stat-cell {
+  background: var(--bg-2);
+  padding: 10px 12px;
+  border-radius: var(--radius);
+}
+.activity-summary .stat-cell .label {
+  display: block;
+  margin-bottom: 4px;
+}
+.activity-summary .stat-cell .val {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.activity-breakdown {
+  margin-bottom: 14px;
+}
+.activity-breakdown .row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 13px;
+}
+.activity-breakdown .row .row-icon {
+  font-size: 16px;
+  width: 22px;
+}
+.activity-breakdown .row .row-name {
+  flex: 1;
+}
+.activity-breakdown .row .row-count {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  color: var(--green);
+}
+.activity-breakdown .row .row-bar {
+  height: 4px;
+  background: var(--bg-2);
+  border-radius: 2px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+.activity-breakdown .row .row-bar-fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 2px;
+}
+
+.activity-grid {
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  gap: 3px;
+}
+.activity-grid .cell {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: var(--bg-2);
+  border: 1px solid var(--line-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+}
+.activity-grid .cell.active {
+  background: var(--green);
+  border-color: var(--green);
+  color: white;
+}
+.activity-grid .cell.future { opacity: 0.3; }
+
+/* ============================================================
+   RESET LINK (quiet)
+   ============================================================ */
+.reset-link-wrap {
+  text-align: center;
+  margin-top: 36px;
+  padding-bottom: 12px;
+}
+.reset-link {
+  font-size: 11px;
+  color: var(--ink-faint);
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 3px;
+  cursor: pointer;
+  user-select: none;
+  letter-spacing: 0.04em;
+}
+.reset-link:active {
+  color: var(--ink-soft);
+}
+
+/* ============================================================
+   FAST-LOG
+   ============================================================ */
+.fastlog-section {
+  margin-top: 28px;
+}
+.fastlog-pills {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.fastlog-pills .fpill {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  background: var(--surface);
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: all .15s;
+  user-select: none;
+}
+.fastlog-pills .fpill.active {
+  background: var(--ink);
+  color: white;
+  border-color: var(--ink);
+}
+.fastlog-pills .fpill.flag.active {
+  background: var(--green);
+  border-color: var(--green);
+}
+.fastlog-saved {
+  font-size: 11px;
+  color: var(--ok);
+  font-weight: 500;
+  margin-top: 8px;
+  opacity: 0;
+  transition: opacity .3s;
+}
+.fastlog-saved.show { opacity: 1; }
+
+/* ============================================================
+   WEEKLY EXTRA
+   ============================================================ */
+.extra-card {
+  background: var(--green-faint);
+  border: 1px dashed var(--green-soft);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  margin-top: 14px;
+}
+.extra-card .label { color: var(--green); margin-bottom: 4px; }
+.extra-card .ttl { font-weight: 600; font-size: 15px; margin-bottom: 2px; }
+.extra-card .desc { font-size: 13px; color: var(--ink-soft); margin-bottom: 4px; }
+.extra-card .note { font-size: 11px; color: var(--ink-faint); }
+
+/* ============================================================
+   CALENDAR
+   ============================================================ */
 .cal-controls {
   display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 16px;
+  margin: 8px 0 16px;
 }
 .cal-controls button {
-  background: transparent; border: 1px solid var(--line); color: var(--ink);
-  padding: 8px 14px; border-radius: var(--radius);
-  font-family: 'JetBrains Mono', monospace; font-size: 11px;
-  letter-spacing: 0.08em; cursor: pointer;
+  background: var(--surface);
+  border: 1px solid var(--line); color: var(--ink);
+  padding: 8px 14px; border-radius: 100px;
+  font-size: 12px; font-weight: 500;
+  cursor: pointer;
 }
 .cal-controls .month-label {
-  font-family: 'Fraunces', serif; font-size: 18px; font-style: italic;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
+
 .cal-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 4px;
 }
 .cal-grid .dow {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 0.1em;
+  font-size: 10px;
   color: var(--ink-faint);
   text-align: center;
   padding: 6px 0;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 .cal-day {
   aspect-ratio: 1;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   border: 1px solid var(--line-soft);
   border-radius: var(--radius);
-  font-family: 'JetBrains Mono', monospace;
   font-size: 13px;
-  background: #fefcf8;
+  font-weight: 500;
+  background: var(--surface);
   cursor: pointer;
   position: relative;
   transition: all .15s;
 }
 .cal-day.other { color: var(--ink-faint); opacity: 0.4; }
-.cal-day.today { border-color: var(--accent); border-width: 1.5px; }
+.cal-day.today {
+  border-color: var(--green);
+  border-width: 1.5px;
+  background: var(--green-faint);
+}
 .cal-day.today::before {
   content: ''; position: absolute; top: 3px; right: 3px;
-  width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
+  width: 5px; height: 5px; border-radius: 50%; background: var(--green);
 }
-.cal-day.selected { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.cal-day.photo-day::after {
+  content: '◉';
+  position: absolute; top: 1px; left: 4px;
+  font-size: 9px; line-height: 1;
+  color: var(--green);
+}
+.cal-day.selected {
+  background: var(--green); color: white; border-color: var(--green);
+}
 .cal-day .indicator {
   display: flex; gap: 2px; margin-top: 3px;
 }
@@ -277,215 +912,34 @@ h3 { font-size: 15px; line-height: 1.3; font-weight: 500; }
   width: 4px; height: 4px; border-radius: 50%;
   background: var(--line);
 }
-.cal-day .indicator span.am-done { background: var(--accent); }
-.cal-day .indicator span.pm-done { background: var(--ink); }
-.cal-day.selected .indicator span.am-done { background: var(--accent-soft); }
-.cal-day.selected .indicator span.pm-done { background: var(--paper-2); }
+.cal-day .indicator span.am-done { background: var(--green); }
+.cal-day .indicator span.pm-done { background: var(--green-dark); }
+.cal-day.selected .indicator span.am-done,
+.cal-day.selected .indicator span.pm-done { background: white; }
 
 .cal-detail {
-  margin-top: 24px;
-  padding: 16px;
-  background: var(--paper-2);
+  margin-top: 20px;
+  padding: 18px;
+  background: var(--surface);
   border-radius: var(--radius-lg);
+  border: 1px solid var(--line-soft);
 }
-.cal-detail h3 { margin-bottom: 10px; font-style: italic; font-size: 16px; }
+.cal-detail h3 { font-weight: 700; font-size: 17px; margin-bottom: 8px; }
 .cal-detail .stats {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
   margin-top: 12px;
 }
 .cal-detail .stat {
-  background: #fefcf8; padding: 10px 12px; border-radius: var(--radius);
+  background: var(--bg-2); padding: 10px 12px; border-radius: var(--radius);
 }
 .cal-detail .stat .label { display: block; margin-bottom: 4px; }
-.cal-detail .stat .val { font-family: 'Fraunces', serif; font-size: 18px; }
-
-/* ============ LOG ============ */
-.log-form textarea {
-  width: 100%;
-  min-height: 90px;
-  padding: 14px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: #fefcf8;
-  font-family: 'Fraunces', serif;
-  font-size: 15px;
-  color: var(--ink);
-  resize: vertical;
-  outline: none;
-  margin-bottom: 12px;
-}
-.log-form textarea:focus { border-color: var(--accent); }
-
-.log-row {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-  margin-bottom: 12px;
-}
-.log-row .field {
-  background: #fefcf8;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 10px 12px;
-}
-.log-row .field .label { display: block; margin-bottom: 4px; }
-.log-row .field select {
-  width: 100%; border: none; outline: none; background: transparent;
-  font-family: 'Fraunces', serif; font-size: 15px; color: var(--ink);
-  appearance: none; -webkit-appearance: none;
+.cal-detail .stat .val {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--green);
 }
 
-.tag-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-.tag-pills .pill {
-  font-family: 'JetBrains Mono', monospace; font-size: 11px;
-  padding: 6px 10px; border: 1px solid var(--line); border-radius: 20px;
-  background: #fefcf8; color: var(--ink-soft); cursor: pointer;
-  transition: all .15s; letter-spacing: 0.04em;
-}
-.tag-pills .pill.active {
-  background: var(--ink); color: var(--paper); border-color: var(--ink);
-}
-
-.btn {
-  display: inline-block;
-  padding: 12px 18px;
-  background: var(--ink);
-  color: var(--paper);
-  border: none;
-  border-radius: var(--radius);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  cursor: pointer;
-  width: 100%;
-}
-.btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
-.btn.danger { background: var(--danger); }
-.btn:active { transform: scale(0.98); }
-
-.log-entries { margin-top: 24px; }
-.log-entry {
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line-soft);
-}
-.log-entry .meta {
-  display: flex; justify-content: space-between; align-items: baseline;
-  margin-bottom: 6px;
-}
-.log-entry .date { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--ink-faint); }
-.log-entry .scores { display: flex; gap: 10px; }
-.log-entry .score { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-soft); }
-.log-entry .score em { color: var(--accent); font-style: normal; }
-.log-entry .text { font-size: 15px; line-height: 1.5; color: var(--ink); }
-.log-entry .tags { margin-top: 6px; display: flex; gap: 4px; flex-wrap: wrap; }
-.log-entry .tags span {
-  font-family: 'JetBrains Mono', monospace; font-size: 10px;
-  background: var(--paper-2); padding: 2px 7px; border-radius: 3px;
-  color: var(--ink-soft); letter-spacing: 0.04em;
-}
-
-/* ============ TIMER ============ */
-.timer-presets { display: grid; gap: 10px; margin-bottom: 24px; }
-.timer-preset {
-  display: flex; align-items: center; gap: 14px;
-  padding: 14px 16px;
-  background: #fefcf8;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  cursor: pointer;
-  transition: all .15s;
-}
-.timer-preset:active { background: var(--paper-2); }
-.timer-preset.active { border-color: var(--accent); border-width: 1.5px; }
-.timer-preset .duration {
-  font-family: 'Fraunces', serif; font-size: 22px; font-style: italic;
-  width: 50px;
-}
-.timer-preset .info { flex: 1; }
-.timer-preset .info .name { font-family: 'Fraunces', serif; font-size: 15px; }
-.timer-preset .info .desc { font-size: 12px; color: var(--ink-faint); margin-top: 2px; }
-
-.timer-display {
-  text-align: center;
-  padding: 32px 20px;
-  background: #fefcf8;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--line);
-  margin-bottom: 16px;
-}
-.timer-display .clock {
-  font-family: 'Fraunces', serif;
-  font-size: 64px;
-  font-weight: 300;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-}
-.timer-display .stage {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  margin-top: 8px;
-}
-.timer-display .next {
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px dashed var(--line);
-  font-size: 13px;
-  color: var(--ink-soft);
-  font-style: italic;
-}
-.timer-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-/* Sandwich method protocol */
-.protocol-box {
-  background: var(--paper-2);
-  padding: 16px;
-  border-radius: var(--radius-lg);
-  margin-bottom: 16px;
-}
-.protocol-box h3 { margin-bottom: 10px; font-style: italic; }
-.protocol-box ol { padding-left: 18px; font-size: 13.5px; line-height: 1.7; color: var(--ink-soft); }
-.protocol-box ol li { margin-bottom: 4px; }
-.protocol-box ol li strong { color: var(--ink); }
-
-/* ============ NAV ============ */
-.nav {
-  position: fixed;
-  bottom: 0; left: 50%; transform: translateX(-50%);
-  width: 100%; max-width: 480px;
-  background: rgba(245, 241, 234, 0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-top: 1px solid var(--line);
-  padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  z-index: 100;
-}
-.nav-btn {
-  background: transparent; border: none; padding: 8px 4px;
-  display: flex; flex-direction: column; align-items: center; gap: 3px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  cursor: pointer;
-}
-.nav-btn.active { color: var(--accent); }
-.nav-btn svg { width: 20px; height: 20px; stroke-width: 1.5; }
-
-/* ============ EMPTY STATES ============ */
-.empty {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--ink-faint);
-  font-style: italic;
-}
-
-/* ============ RULES (decorative) ============ */
 .divider-rule {
   display: flex; align-items: center; gap: 10px;
   margin: 28px 0 14px;
@@ -494,66 +948,386 @@ h3 { font-size: 15px; line-height: 1.3; font-weight: 500; }
 .divider-rule::before, .divider-rule::after {
   content: ''; flex: 1; height: 1px; background: var(--line);
 }
-.divider-rule .label { font-size: 9px; }
+.divider-rule .label { font-size: 10px; font-weight: 600; }
 
-/* small ornament */
-.fleuron { color: var(--accent); font-size: 14px; opacity: 0.6; }
+.card-block {
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  margin-bottom: 12px;
+}
+.card-block h3 { margin-bottom: 6px; }
+
+/* ============================================================
+   LOG
+   ============================================================ */
+.log-form .log-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  margin-bottom: 12px;
+}
+.log-form .field {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+.log-form .field .label { display: block; margin-bottom: 4px; }
+.log-form .field select {
+  width: 100%; border: none; outline: none; background: transparent;
+  font-family: 'Inter', sans-serif; font-size: 15px; color: var(--ink);
+  font-weight: 500;
+  appearance: none; -webkit-appearance: none;
+}
+
+.tag-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.tag-pills .pill {
+  font-size: 12px; font-weight: 500;
+  padding: 7px 12px; border: 1px solid var(--line); border-radius: 100px;
+  background: var(--surface); color: var(--ink-soft); cursor: pointer;
+  transition: all .15s;
+}
+.tag-pills .pill.active {
+  background: var(--ink); color: white; border-color: var(--ink);
+}
+
+.log-form textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  resize: vertical;
+  outline: none;
+  margin-bottom: 12px;
+}
+.log-form textarea:focus { border-color: var(--green); }
+
+.btn {
+  display: inline-block;
+  padding: 14px 18px;
+  background: var(--green);
+  color: white;
+  border: none;
+  border-radius: 100px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  letter-spacing: 0.02em;
+}
+.btn.ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+.btn.danger {
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+.btn:active { transform: scale(0.98); }
+
+.log-entries { margin-top: 16px; }
+.log-entry {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.log-entry .meta {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 6px;
+}
+.log-entry .date { font-size: 11px; font-weight: 600; color: var(--ink-faint); letter-spacing: 0.04em; }
+.log-entry .scores { display: flex; gap: 10px; }
+.log-entry .score { font-size: 12px; color: var(--ink-soft); }
+.log-entry .score em { color: var(--green); font-style: normal; font-weight: 700; }
+.log-entry .text { font-size: 14px; line-height: 1.5; color: var(--ink); }
+.log-entry .tags { margin-top: 6px; display: flex; gap: 4px; flex-wrap: wrap; }
+.log-entry .tags span {
+  font-size: 10px;
+  font-weight: 500;
+  background: var(--bg-2); padding: 3px 8px; border-radius: 100px;
+  color: var(--ink-soft);
+}
+
+.empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--ink-faint);
+  font-size: 14px;
+}
+
+/* ============================================================
+   PILLS TAB (history & stats)
+   ============================================================ */
+.pills-tab-summary {
+  background: linear-gradient(135deg, var(--green) 0%, var(--green-bright) 100%);
+  color: white;
+  padding: 22px;
+  border-radius: var(--radius-xl);
+  margin-bottom: 16px;
+}
+.pills-tab-summary h2 {
+  color: white;
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+.pills-tab-summary .sub {
+  font-size: 13px;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.pill-history {
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.pill-history .head {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 12px;
+}
+.pill-history .name { font-weight: 600; font-size: 15px; }
+.pill-history .schedule { font-size: 12px; color: var(--ink-faint); }
+.pill-history .stat-line {
+  display: flex; gap: 12px; margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.pill-history .stat-line .stat-item {
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+.pill-history .stat-line .stat-item strong {
+  color: var(--green);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  display: block;
+}
+
+.pill-history-grid {
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  gap: 3px;
+}
+.pill-history-grid .cell {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: var(--bg-2);
+  border: 1px solid var(--line-soft);
+}
+.pill-history-grid .cell.taken { background: var(--green); border-color: var(--green); }
+.pill-history-grid .cell.not-due { background: var(--bg-2); border-color: var(--line-soft); opacity: 0.5; }
+.pill-history-grid .cell.missed { background: var(--surface); border: 1px dashed var(--danger); }
+.pill-history-grid .cell.future { opacity: 0.3; }
+
+.pill-legend {
+  display: flex; gap: 14px; flex-wrap: wrap;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+}
+.pill-legend .legend-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+.pill-legend .legend-square {
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  border: 1px solid var(--line-soft);
+}
+.pill-legend .legend-square.taken { background: var(--green); border-color: var(--green); }
+.pill-legend .legend-square.missed { background: var(--surface); border: 1px dashed var(--danger); }
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(26, 38, 32, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal-backdrop.show { display: flex; }
+.modal {
+  background: var(--bg);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  max-width: 420px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.modal h2 { margin-bottom: 12px; }
+.modal .label { margin-bottom: 12px; }
+.modal ol {
+  padding-left: 18px; font-size: 14px; line-height: 1.6;
+  margin-bottom: 16px; color: var(--ink-soft);
+}
+.modal ol strong { color: var(--ink); font-weight: 600; }
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav {
+  position: fixed;
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 480px;
+  background: rgba(250, 250, 247, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--line-soft);
+  padding: 8px 0 calc(10px + env(safe-area-inset-bottom));
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  z-index: 100;
+}
+.nav-btn {
+  background: transparent; border: none; padding: 8px 4px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--ink-faint);
+  cursor: pointer;
+  transition: color .2s;
+}
+.nav-btn.active { color: var(--green); font-weight: 600; }
+.nav-btn svg { width: 22px; height: 22px; stroke-width: 1.8; }
+
 </style>
 </head>
 <body>
 
-<!-- ============ HEADER ============ -->
 <header class="app-header">
-  <div class="brand">Skin · Protocol</div>
-  <div class="phase-badge" id="phaseBadge">Phase 1</div>
+  <div class="greeting">Skin <span>·</span> Protocol</div>
+  <div class="phase-pill" id="phaseBadge">Phase 1</div>
 </header>
 
-<!-- ============ SCREEN: TODAY ============ -->
+<!-- ============================================================
+     SCREEN: TODAY
+     ============================================================ -->
 <section class="screen active" id="screen-today">
-  <div class="today-hero">
-    <div class="date" id="todayDate">—</div>
-    <h1><em id="todayProgress">—</em> <span id="todayHeading">шагов сделано</span></h1>
-    <div class="sub" id="todaySub">Восстановление барьера. День <span id="phaseDay">—</span> из 42.</div>
 
-    <div class="progress-ring">
-      <svg class="ring-svg" viewBox="0 0 44 44">
-        <circle class="ring-bg" cx="22" cy="22" r="18"/>
-        <circle class="ring-fg" id="ringFg" cx="22" cy="22" r="18"
-                stroke-dasharray="113.1" stroke-dashoffset="113.1"
-                transform="rotate(-90 22 22)"/>
+  <!-- Hero with progress -->
+  <div class="hero-card">
+    <div class="date" id="todayDate">—</div>
+    <div class="title-row">
+      <div class="progress-text">
+        <h1 id="todayHeading">— шагов</h1>
+        <div class="sub" id="todaySub">Восстановление барьера. День — из 42.</div>
+      </div>
+      <svg class="ring-svg" viewBox="0 0 64 64">
+        <circle class="ring-bg" cx="32" cy="32" r="26"/>
+        <circle class="ring-fg" id="ringFg" cx="32" cy="32" r="26"
+                stroke-dasharray="163.4" stroke-dashoffset="163.4"
+                transform="rotate(-90 32 32)"/>
+        <text class="ring-text" id="ringText" x="32" y="38" text-anchor="middle">0%</text>
       </svg>
-      <div class="text-block">
-        <div class="title" id="ringTitle">Сегодня</div>
-        <div class="meta" id="ringMeta">— / —</div>
+    </div>
+  </div>
+
+  <div id="conflictWarnings"></div>
+  <div id="photoWidget"></div>
+
+  <!-- Routine with AM/PM toggle -->
+  <div class="routine-header">
+    <h2 id="routineTitle">Утренняя рутина</h2>
+    <div class="toggle" id="amPmToggle">
+      <div class="knob active" data-period="am">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4l1.4-1.4M17 7l1.4-1.4"/></svg>
+      </div>
+      <div class="knob" data-period="pm">
+        <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </div>
     </div>
   </div>
 
-  <div class="routine-section" id="amSection">
-    <div class="section-head">
-      <h2>Утро</h2>
-      <span class="time-badge">AM · 5 мин</span>
-    </div>
-    <div id="amSteps"></div>
-  </div>
-
-  <div class="routine-section" id="pmSection">
-    <div class="section-head">
-      <h2>Вечер</h2>
-      <span class="time-badge">PM · 10 мин</span>
-    </div>
-    <div id="pmSteps"></div>
-  </div>
+  <div class="steps-list" id="stepsList"></div>
 
   <div id="weeklyExtra"></div>
+
+  <!-- Trackers: pills + sport + office -->
+  <div class="pills-section">
+    <div class="section-title">
+      <h2>Таблетки и витамины</h2>
+      <span class="meta-info" id="pillsMeta">— / —</span>
+    </div>
+    <div id="pillsList"></div>
+  </div>
+
+  <!-- Sport tracker (compact) -->
+  <div class="tracker-section">
+    <div class="tracker-head">
+      <div class="tracker-title">
+        <span class="tracker-emoji">🏋</span>
+        <h3>Спорт</h3>
+      </div>
+      <span class="tracker-meta" id="sportTodayLabel">—</span>
+    </div>
+    <div class="chip-row" id="sportChips">
+      <span class="chip" data-sport="gym">🏋 Зал</span>
+      <span class="chip" data-sport="badminton">🏸 Бадминтон</span>
+      <span class="chip" data-sport="cardio">🏃 Кардио</span>
+      <span class="chip" data-sport="yoga">🧘 Йога</span>
+    </div>
+  </div>
+
+  <!-- Office tracker (compact) -->
+  <div class="tracker-section">
+    <div class="tracker-head">
+      <div class="tracker-title">
+        <span class="tracker-emoji">📍</span>
+        <h3>Где работала</h3>
+      </div>
+      <span class="tracker-meta" id="officeTodayLabel">—</span>
+    </div>
+    <div class="chip-row" id="officeChips">
+      <span class="chip" data-office="office">🏢 Офис</span>
+      <span class="chip" data-office="home">🏠 Из дома</span>
+      <span class="chip" data-office="off">☕ Выходной</span>
+    </div>
+  </div>
+
+  <!-- Fast-log -->
+  <div class="fastlog-section">
+    <div class="section-title">
+      <h2>Что сегодня</h2>
+      <span class="meta-info">Один тап</span>
+    </div>
+    <div class="fastlog-pills" id="fastlogPills">
+      <span class="fpill" data-tag="алкоголь">Алкоголь</span>
+      <span class="fpill" data-tag="стресс">Стресс</span>
+      <span class="fpill" data-tag="плохой-сон">Плохой сон</span>
+      <span class="fpill flag" data-tag="прилив">Прилив</span>
+      <span class="fpill flag" data-tag="шелушение">Шелушение</span>
+      <span class="fpill flag" data-tag="жжение">Жжение</span>
+      <span class="fpill flag" data-tag="зуд">Зуд</span>
+      <span class="fpill" data-tag="новый-продукт">Новый продукт</span>
+      <span class="fpill" data-tag="процедура">Процедура</span>
+    </div>
+    <div class="fastlog-saved" id="fastlogSaved">Сохранено</div>
+  </div>
 </section>
 
-<!-- ============ SCREEN: CALENDAR ============ -->
+<!-- ============================================================
+     SCREEN: CALENDAR
+     ============================================================ -->
 <section class="screen" id="screen-calendar">
   <div class="cal-controls">
-    <button id="calPrev">‹ ПРЕД</button>
+    <button id="calPrev">‹</button>
     <span class="month-label" id="monthLabel">—</span>
-    <button id="calNext">СЛЕД ›</button>
+    <button id="calNext">›</button>
   </div>
   <div class="cal-grid" id="calGrid"></div>
 
@@ -562,19 +1336,24 @@ h3 { font-size: 15px; line-height: 1.3; font-weight: 500; }
     <div id="calDetailBody"></div>
   </div>
 
-  <div class="divider-rule"><span class="label">Phase progression</span></div>
-  <div class="card">
-    <div class="card-title">
-      <h2 style="font-style:italic;">Текущая фаза</h2>
-      <span class="label" id="currentPhaseLabel">Phase 1</span>
-    </div>
+  <div class="divider-rule"><span class="label">Текущая фаза</span></div>
+  <div class="card-block" id="phaseInfoCard">
+    <h3 id="phaseInfoTitle">—</h3>
     <div id="phaseInfo"></div>
+  </div>
+
+  <div class="divider-rule"><span class="label">Легенда</span></div>
+  <div style="font-size:12px; line-height:1.8; color:var(--ink-soft);">
+    <div>● зелёные точки внизу ячейки — рутина AM/PM выполнена</div>
+    <div>◉ метка слева сверху — день фотосессии</div>
   </div>
 </section>
 
-<!-- ============ SCREEN: LOG ============ -->
+<!-- ============================================================
+     SCREEN: LOG
+     ============================================================ -->
 <section class="screen" id="screen-log">
-  <h2 style="font-style:italic; margin-bottom:14px;">Заметка о коже</h2>
+  <h2 style="margin: 12px 0 14px;">Заметка о коже</h2>
 
   <div class="log-form">
     <div class="log-row">
@@ -605,7 +1384,6 @@ h3 { font-size: 15px; line-height: 1.3; font-weight: 500; }
       <span class="pill" data-tag="зуд">Зуд</span>
       <span class="pill" data-tag="стянутость">Стянутость</span>
       <span class="pill" data-tag="новый-продукт">Новый продукт</span>
-      <span class="pill" data-tag="спорт">Спорт</span>
       <span class="pill" data-tag="стресс">Стресс</span>
       <span class="pill" data-tag="алкоголь">Алкоголь</span>
       <span class="pill" data-tag="плохой-сон">Плохой сон</span>
@@ -620,188 +1398,193 @@ h3 { font-size: 15px; line-height: 1.3; font-weight: 500; }
 
   <div class="divider-rule"><span class="label">Экспорт</span></div>
   <button class="btn ghost" id="exportLog">Экспортировать всё в Markdown</button>
-  <div style="height:10px"></div>
-  <button class="btn ghost" id="resetData" style="color:var(--danger); border-color:var(--danger);">Сбросить все данные</button>
+
+  <div class="reset-link-wrap">
+    <a class="reset-link" id="resetData">сбросить данные</a>
+  </div>
 </section>
 
-<!-- ============ SCREEN: TIMER ============ -->
-<section class="screen" id="screen-timer">
-  <h2 style="font-style:italic; margin-bottom:6px;">Таймер</h2>
-  <p style="color:var(--ink-soft); font-size:14px; margin-bottom:20px;">
-    Для пауз между нанесениями — sandwich method и интервалы между активами.
-  </p>
-
-  <div class="timer-display">
-    <div class="clock" id="timerClock">00:00</div>
-    <div class="stage" id="timerStage">Выбери шаг</div>
-    <div class="next" id="timerNext" style="display:none;">—</div>
+<!-- ============================================================
+     SCREEN: TRACKERS (pills + sport + office, collapsible)
+     ============================================================ -->
+<section class="screen" id="screen-pills">
+  <div class="pills-tab-summary">
+    <h2>Трекеры</h2>
+    <div class="sub" id="pillsTabSummary">Adherence за 30 дней</div>
   </div>
 
-  <div class="timer-buttons">
-    <button class="btn ghost" id="timerStop">Стоп</button>
-    <button class="btn" id="timerStart">Старт</button>
-  </div>
-
-  <div class="divider-rule"><span class="label">Быстрые таймеры</span></div>
-
-  <div class="timer-presets">
-    <div class="timer-preset" data-min="1">
-      <div class="duration">1<span style="font-size:13px;color:var(--ink-faint)">мин</span></div>
-      <div class="info">
-        <div class="name">Очищение</div>
-        <div class="desc">60 секунд массажа cleansing balm</div>
+  <!-- Pills group -->
+  <div class="tracker-group">
+    <div class="tracker-group-head" data-group="pills">
+      <div class="tg-title">
+        <span class="tg-emoji">💊</span>
+        <h3>Таблетки и витамины</h3>
+      </div>
+      <div class="tg-meta">
+        <span id="pillsGroupMeta">—</span>
+        <svg class="tg-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6"/></svg>
       </div>
     </div>
-    <div class="timer-preset" data-min="2">
-      <div class="duration">2<span style="font-size:13px;color:var(--ink-faint)">мин</span></div>
-      <div class="info">
-        <div class="name">Впитать крем</div>
-        <div class="desc">Перед нанесением SPF</div>
-      </div>
-    </div>
-    <div class="timer-preset" data-min="5">
-      <div class="duration">5<span style="font-size:13px;color:var(--ink-faint)">мин</span></div>
-      <div class="info">
-        <div class="name">Sandwich · шаг 1</div>
-        <div class="desc">Eucerin → пауза → ретиналь</div>
-      </div>
-    </div>
-    <div class="timer-preset" data-min="10">
-      <div class="duration">10<span style="font-size:13px;color:var(--ink-faint)">мин</span></div>
-      <div class="info">
-        <div class="name">Sandwich · шаг 2</div>
-        <div class="desc">Ретиналь → пауза → Cicapair</div>
-      </div>
-    </div>
-    <div class="timer-preset" data-min="15">
-      <div class="duration">15<span style="font-size:13px;color:var(--ink-faint)">мин</span></div>
-      <div class="info">
-        <div class="name">Тканевая маска</div>
-        <div class="desc">Не дольше — ткань заберёт влагу</div>
+    <div class="tracker-group-body" id="pillsGroupBody">
+      <div id="pillsHistoryList"></div>
+      <div class="card-block" style="margin-top: 14px;">
+        <h3>Совмещение приёмов</h3>
+        <div style="font-size:13px; line-height:1.6; color:var(--ink-soft);">
+          <p style="margin-bottom:8px;"><strong style="color:var(--ink);">Железо</strong> — натощак, не с кофе/чаем/молочкой/кальцием в течение 2 часов. Принимать <strong style="color:var(--green);">с витамином С</strong> для усвоения.</p>
+          <p style="margin-bottom:8px;"><strong style="color:var(--ink);">D3</strong> — с едой, содержащей жир (авокадо, орехи, сыр, оливковое масло). На пустой желудок усваивается плохо.</p>
+          <p style="margin-bottom:8px;"><strong style="color:var(--ink);">Магний</strong> — вечером, помогает сну. Не утром.</p>
+          <p><strong style="color:var(--ink);">Сертралин</strong> — стабильно в одно и то же время. Время дня не критично.</p>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="protocol-box" id="sandwichBox">
-    <h3>Sandwich method (для ретиналя)</h3>
+  <!-- Sport group -->
+  <div class="tracker-group">
+    <div class="tracker-group-head" data-group="sport">
+      <div class="tg-title">
+        <span class="tg-emoji">🏋</span>
+        <h3>Спорт</h3>
+      </div>
+      <div class="tg-meta">
+        <span id="sportGroupMeta">—</span>
+        <svg class="tg-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+    </div>
+    <div class="tracker-group-body" id="sportGroupBody">
+      <div id="sportHistory"></div>
+    </div>
+  </div>
+
+  <!-- Office group -->
+  <div class="tracker-group">
+    <div class="tracker-group-head" data-group="office">
+      <div class="tg-title">
+        <span class="tg-emoji">📍</span>
+        <h3>Офис / удалёнка</h3>
+      </div>
+      <div class="tg-meta">
+        <span id="officeGroupMeta">—</span>
+        <svg class="tg-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+    </div>
+    <div class="tracker-group-body" id="officeGroupBody">
+      <div id="officeHistory"></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================================================
+     PHOTO MODAL
+     ============================================================ -->
+<div class="modal-backdrop" id="photoModal">
+  <div class="modal">
+    <span class="label">Фотосессия</span>
+    <h2>Стандартный протокол</h2>
+    <p style="font-size:14px; color:var(--ink-soft); margin-bottom:14px; line-height:1.5;">
+      Утром, до умывания. 5 шотов в одинаковом свете. Без бьюти-режима, без HDR, без вспышки.
+    </p>
     <ol>
-      <li><strong>Тонер</strong> → подождать пока впитается</li>
-      <li><strong>Eucerin AQUAporin</strong> тонкий слой</li>
-      <li><strong>Пауза 5 минут</strong> (запусти таймер)</li>
-      <li><strong>Celimax Retinal Shot</strong> — горошина</li>
-      <li><strong>Пауза 10 минут</strong> (запусти таймер)</li>
-      <li><strong>Cicapair Repair Cream</strong> поверх</li>
+      <li><strong>Frontal</strong> — лицо прямо в камеру, ~30–40 см</li>
+      <li><strong>Left profile 45°</strong> — поворот головы вправо</li>
+      <li><strong>Right profile 45°</strong> — поворот головы влево</li>
+      <li><strong>Forehead close-up</strong> — ~15–20 см от лба</li>
+      <li><strong>T-zone close-up</strong> — нос + перинос + щёки</li>
     </ol>
+    <p style="font-size:12px; color:var(--ink-faint); margin-bottom:16px;">
+      Сохрани в формате <code>YYYY-MM-DD_имя.jpg</code>. После — зафиксируй сессию ниже.
+    </p>
+    <button class="btn" id="photoTakenBtn">Зафиксировать сессию</button>
+    <div style="height:8px"></div>
+    <button class="btn ghost" id="photoCloseBtn">Закрыть</button>
   </div>
-</section>
+</div>
 
-<!-- ============ NAV ============ -->
+<!-- ============================================================
+     NAV
+     ============================================================ -->
 <nav class="nav">
   <button class="nav-btn active" data-screen="today">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>
     Сегодня
   </button>
   <button class="nav-btn" data-screen="calendar">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="18" height="16" rx="1"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
     Календарь
+  </button>
+  <button class="nav-btn" data-screen="pills">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
+    Трекеры
   </button>
   <button class="nav-btn" data-screen="log">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 4h11l3 3v13H5z"/><path d="M9 12h6M9 16h6M9 8h3"/></svg>
     Лог
   </button>
-  <button class="nav-btn" data-screen="timer">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="13" r="7"/><path d="M12 13V9M9 3h6M12 6v0"/></svg>
-    Таймер
-  </button>
 </nav>
 
 <script>
 /* ============================================================
-   ДАННЫЕ — РУТИНЫ И ФАЗЫ
+   PRODUCTS, PHASES, ROUTINES
    Source of truth: ROUTINE_CURRENT.md
-   Если изменишь рутину в файле — обнови соответствующие записи здесь.
    ============================================================ */
 
 const PHASES = [
-  {
-    id: 1,
-    name: 'Phase 1 — Барьер',
-    fullName: 'Восстановление барьера',
-    startDate: '2026-05-07',
-    durationDays: 42, // 6 weeks
+  { id: 1, name: 'Phase 1', fullName: 'Восстановление барьера', startDate: '2026-05-07', durationDays: 42,
     description: 'Меньше — это больше. Барьер восстанавливается, когда ему не мешают.',
-    rules: [
-      'Никаких кислот, ретиноидов, витамина С в высокой %',
-      'Никаких энзимов, скрабов, щёток',
-      'Никаких эфирных масел и отдушки',
-      'Только тёплая (не горячая) вода'
-    ]
-  },
-  {
-    id: 2,
-    name: 'Phase 2 — Введение AZ',
-    fullName: 'Целевое лечение — азелаинка',
-    startDate: '2026-06-18',
-    durationDays: 42,
+    rules: ['Никаких кислот, ретиноидов, витамина С в высокой %','Никаких энзимов, скрабов, щёток','Никаких эфирных масел и отдушки','Только тёплая (не горячая) вода'] },
+  { id: 2, name: 'Phase 2', fullName: 'Целевое лечение — азелаинка', startDate: '2026-06-18', durationDays: 42,
     description: 'Постепенное введение Cos De BAHA AZ Serum. Не раньше Phase 1.',
-    rules: [
-      'AZ Serum: 3 раза в неделю → через день → каждый вечер',
-      'Не смешивать с BHA в один вечер',
-      'Жжение >30 мин = откатиться'
-    ]
-  },
-  {
-    id: 3,
-    name: 'Phase 3 — Ретиналь',
-    fullName: 'Введение ретиналя + поддержка',
-    startDate: '2026-08-13',
-    durationDays: 90,
+    rules: ['AZ Serum: 3 раза в неделю → через день → каждый вечер','Не смешивать с BHA в один вечер','Жжение >30 мин = откатиться'] },
+  { id: 3, name: 'Phase 3', fullName: 'Введение ретиналя', startDate: '2026-08-13', durationDays: 90,
     description: 'Только при стабильности 6+ недель в Phase 2.',
-    rules: [
-      'Sandwich method всегда',
-      'Максимум 3 раза в неделю — никогда не ежедневно',
-      'Не в один вечер с AZ Serum'
-    ]
-  }
+    rules: ['Sandwich method всегда','Максимум 3 раза в неделю — никогда не ежедневно','Не в один вечер с AZ Serum'] }
 ];
 
-// AM рутина общая для Phase 1
+// cat: cleanser/toner/serum/cream/spf/active/eye/spot — даёт цвет плейсхолдера
+// abbr: 2 буквы для плейсхолдера
 const AM_PHASE1 = [
-  { num: '01', name: 'Очищение', product: 'Только вода ИЛИ Bioderma Sensibio Gel Moussant', note: '30 сек массажа · тёплая вода · никогда не горячая' },
-  { num: '02', name: 'Тонер + увлажнение', product: 'Klairs Supple Preparation Unscented', note: 'Похлопать по влажной коже · не вытирать' },
-  { num: '03', name: 'Крем', product: 'Celimax Dual Barrier Cream', note: 'Горошина на всё лицо' },
-  { num: '04', name: 'SPF', product: 'SKIN1004 Sun Serum SPF50+', note: '¼ ч.л. · 2 длины пальца · последний шаг' }
+  { num: '01', name: 'Очищение', cat: 'cleanser', abbr: 'BD', productKey: 'bioderma', product: 'Bioderma Sensibio Gel Moussant', note: '30 сек массажа · тёплая вода' },
+  { num: '02', name: 'Тонер', cat: 'toner', abbr: 'KL', productKey: 'klairs', product: 'Klairs Supple Preparation Unscented', note: 'Похлопать по влажной коже' },
+  { num: '03', name: 'Крем', cat: 'cream', abbr: 'CD', productKey: 'celimaxCream', product: 'Celimax Dual Barrier Cream', note: 'Горошина на всё лицо' },
+  { num: '04', name: 'SPF', cat: 'spf', abbr: 'SK', productKey: 'skin1004spf', product: 'SKIN1004 Sun Serum SPF50+', note: '¼ ч.л. — 2 длины пальца' }
 ];
 
 const PM_PHASE1 = [
-  { num: '01', name: 'Первое очищение', product: 'Beauty of Joseon Cleansing Balm', note: 'Только если был SPF/макияж · 60 сек · эмульгировать водой', conditional: true },
-  { num: '02', name: 'Второе очищение', product: 'Bioderma Sensibio Gel Moussant', note: '30 сек · тёплая вода' },
-  { num: '03', name: 'Тонер', product: 'Klairs Supple Preparation Unscented', note: 'Похлопать по влажной коже' },
-  { num: '04', name: 'Сыворотка', product: 'SKIN1004 Centella Ampoule', note: '3-4 капли · похлопать' },
-  { num: '05', name: 'Крем', product: 'Dr.Jart+ Cicapair Repair Cream', note: 'Горошина на всё лицо' },
-  { num: '06', name: 'Точечно', product: 'LRP Cicaplast Baume B5+', note: 'Толстый слой только на шелушение лба', optional: true },
-  { num: '07', name: 'Глаза', product: 'Clinique All About Eyes Rich', note: 'Рисовое зерно по орбитальной кости', optional: true }
+  { num: '01', name: 'Первое очищение', cat: 'cleanser', abbr: 'BJ', productKey: 'cleansingBalm', product: 'Beauty of Joseon Cleansing Balm', note: 'Если был SPF/макияж · 60 сек', conditional: true },
+  { num: '02', name: 'Второе очищение', cat: 'cleanser', abbr: 'BD', productKey: 'bioderma', product: 'Bioderma Sensibio Gel Moussant', note: '30 сек · тёплая вода' },
+  { num: '03', name: 'Тонер', cat: 'toner', abbr: 'KL', productKey: 'klairs', product: 'Klairs Supple Preparation Unscented', note: 'Похлопать по влажной коже' },
+  { num: '04', name: 'Сыворотка', cat: 'serum', abbr: 'S1', productKey: 'centellaAmpoule', product: 'SKIN1004 Centella Ampoule', note: '3-4 капли · похлопать' },
+  { num: '05', name: 'Крем', cat: 'cream', abbr: 'DJ', productKey: 'cicapair', product: 'Dr.Jart+ Cicapair Repair', note: 'Горошина на всё лицо' },
+  { num: '06', name: 'Точечно', cat: 'spot', abbr: 'CB', productKey: 'cicaplast', product: 'LRP Cicaplast Baume B5+', note: 'Только на шелушение лба', optional: true },
+  { num: '07', name: 'Глаза', cat: 'eye', abbr: 'CL', productKey: 'eyeCream', product: 'Clinique All About Eyes Rich', note: 'Рисовое зерно по орбите', optional: true }
 ];
 
-// Phase 2 — добавляется AZ серум вечером
-const PM_PHASE2_BASE = [
-  { num: '01', name: 'Первое очищение', product: 'Beauty of Joseon Cleansing Balm', note: '60 сек · эмульгировать', conditional: true },
-  { num: '02', name: 'Второе очищение', product: 'Bioderma / Cicapair Foaming', note: '30 сек' },
-  { num: '03', name: 'Тонер', product: 'Klairs / Celimax Dual Barrier', note: 'Похлопать' },
-  { num: '04', name: 'AZ Serum', product: 'Cos De BAHA Azelaic 10%', note: '1 нажатие · после тонера', azDay: true },
-  { num: '05', name: 'Сыворотка', product: 'SKIN1004 Centella Ampoule', note: '3-4 капли', noAz: true },
-  { num: '06', name: 'Крем', product: 'Dr.Jart+ Cicapair Repair', note: 'Горошина' },
-  { num: '07', name: 'Точечно', product: 'LRP Cicaplast B5+', note: 'Только на проблемные места', optional: true }
+const PM_PHASE2_AZ = [
+  { num: '01', name: 'Первое очищение', cat: 'cleanser', abbr: 'BJ', productKey: 'cleansingBalm', product: 'Beauty of Joseon Cleansing Balm', note: '60 сек · эмульгировать', conditional: true },
+  { num: '02', name: 'Второе очищение', cat: 'cleanser', abbr: 'BD', productKey: 'cicapairFoam', product: 'Bioderma / Cicapair Foaming', note: '30 сек' },
+  { num: '03', name: 'Тонер', cat: 'toner', abbr: 'KL', productKey: 'klairs', product: 'Klairs / Celimax Dual Barrier', note: 'Похлопать' },
+  { num: '04', name: 'AZ Serum', cat: 'active', abbr: 'AZ', productKey: 'azSerum', product: 'Cos De BAHA Azelaic 10%', note: '1 нажатие · после тонера', isActive: true, activeFamily: 'azelaic' },
+  { num: '05', name: 'Крем', cat: 'cream', abbr: 'DJ', productKey: 'cicapair', product: 'Dr.Jart+ Cicapair Repair', note: 'Горошина' },
+  { num: '06', name: 'Точечно', cat: 'spot', abbr: 'CB', productKey: 'cicaplast', product: 'LRP Cicaplast B5+', note: 'Только на проблемные места', optional: true }
 ];
 
-// Phase 3 — sandwich method для ретиналя
+const PM_PHASE2_REST = [
+  { num: '01', name: 'Первое очищение', cat: 'cleanser', abbr: 'BJ', productKey: 'cleansingBalm', product: 'Beauty of Joseon Cleansing Balm', note: '60 сек · эмульгировать', conditional: true },
+  { num: '02', name: 'Второе очищение', cat: 'cleanser', abbr: 'BD', productKey: 'cicapairFoam', product: 'Bioderma / Cicapair Foaming', note: '30 сек' },
+  { num: '03', name: 'Тонер', cat: 'toner', abbr: 'KL', productKey: 'klairs', product: 'Klairs / Celimax Dual Barrier', note: 'Похлопать' },
+  { num: '04', name: 'Сыворотка', cat: 'serum', abbr: 'S1', productKey: 'centellaAmpoule', product: 'SKIN1004 Centella Ampoule', note: '3-4 капли' },
+  { num: '05', name: 'Крем', cat: 'cream', abbr: 'DJ', productKey: 'cicapair', product: 'Dr.Jart+ Cicapair Repair', note: 'Горошина' },
+  { num: '06', name: 'Точечно', cat: 'spot', abbr: 'CB', productKey: 'cicaplast', product: 'LRP Cicaplast B5+', note: 'Только на проблемные места', optional: true }
+];
+
 const PM_PHASE3_RETINAL = [
-  { num: '01', name: 'Первое очищение', product: 'Beauty of Joseon Cleansing Balm', note: '60 сек', conditional: true },
-  { num: '02', name: 'Второе очищение', product: 'Bioderma / Cicapair Foaming', note: '30 сек' },
-  { num: '03', name: 'Тонер', product: 'Klairs', note: 'Похлопать' },
-  { num: '04', name: 'Eucerin AQUAporin', product: 'Eucerin AQUAporin Active', note: 'Тонкий слой · подождать 5 мин', timer: 5 },
-  { num: '05', name: 'Ретиналь', product: 'Celimax Retinal Shot', note: 'Горошина · подождать 10 мин', timer: 10 },
-  { num: '06', name: 'Cicapair поверх', product: 'Dr.Jart+ Cicapair Repair', note: 'Финальный слой' }
+  { num: '01', name: 'Первое очищение', cat: 'cleanser', abbr: 'BJ', productKey: 'cleansingBalm', product: 'Beauty of Joseon Cleansing Balm', note: '60 сек', conditional: true },
+  { num: '02', name: 'Второе очищение', cat: 'cleanser', abbr: 'BD', productKey: 'cicapairFoam', product: 'Bioderma / Cicapair Foaming', note: '30 сек' },
+  { num: '03', name: 'Тонер', cat: 'toner', abbr: 'KL', productKey: 'klairs', product: 'Klairs', note: 'Похлопать' },
+  { num: '04', name: 'Eucerin AQUAporin', cat: 'cream', abbr: 'EU', productKey: 'eucerin', product: 'Eucerin AQUAporin Active', note: 'Тонкий слой · подождать 5 мин' },
+  { num: '05', name: 'Ретиналь', cat: 'active', abbr: 'RT', productKey: 'retinal', product: 'Celimax Retinal Shot', note: 'Горошина · подождать 10 мин', isActive: true, activeFamily: 'retinoid' },
+  { num: '06', name: 'Cicapair поверх', cat: 'cream', abbr: 'DJ', productKey: 'cicapair', product: 'Dr.Jart+ Cicapair Repair', note: 'Финальный слой' }
 ];
 
 const WEEKLY_EXTRAS = {
@@ -809,18 +1592,78 @@ const WEEKLY_EXTRAS = {
   0: { name: 'Pruv:me eye patches (опц.)', product: 'Утром перед важным днём', note: '10 мин · можно из холодильника' }
 };
 
+/* ============================================================
+   PILLS / VITAMINS
+   ============================================================ */
+
+// schedule:
+//   - 'daily' — каждый день
+//   - 'every-2-days' — через день (от startDate)
+//   - 'with-iron' — в дни приёма железа
+const PILLS = [
+  { id: 'sertraline', name: 'Сертралин', icon: '💊', schedule: 'daily', startDate: '2026-05-07',
+    description: 'Антидепрессант', note: 'Стабильно в одно и то же время' },
+  { id: 'd3', name: 'Витамин D3 2000 IU', icon: '☀️', schedule: 'daily', startDate: '2026-05-07',
+    description: 'Дефицит D в Стокгольме', note: 'С едой содержащей жир' },
+  { id: 'iron', name: 'Железо', icon: '🩸', schedule: 'every-2-days', startDate: '2026-05-07',
+    description: '20 шт · курс 2-3 мес', note: 'Натощак · не с кофе/молочкой' },
+  { id: 'vitC', name: 'Витамин C 200 mg', icon: '🍊', schedule: 'with-iron', startDate: '2026-05-07',
+    description: 'Только в дни железа', note: 'Вместе с железом для усвоения' },
+  { id: 'magnesium', name: 'Магний глицинат 200 mg', icon: '🌙', schedule: 'daily', startDate: '2026-05-07',
+    description: 'Сон + тревожность', note: 'Вечером, не утром' }
+];
+
+function isPillDay(pill, dateStr) {
+  if (dateStr < pill.startDate) return false;
+  if (pill.schedule === 'daily') return true;
+  if (pill.schedule === 'every-2-days') {
+    const days = diffDays(pill.startDate, dateStr);
+    return days % 2 === 0;
+  }
+  if (pill.schedule === 'with-iron') {
+    const ironPill = PILLS.find(p => p.id === 'iron');
+    return ironPill ? isPillDay(ironPill, dateStr) : false;
+  }
+  return false;
+}
+
+function getScheduleLabel(pill) {
+  if (pill.schedule === 'daily') return 'Каждый день';
+  if (pill.schedule === 'every-2-days') return 'Через день';
+  if (pill.schedule === 'with-iron') return 'В дни железа';
+  return '';
+}
+
 const DAY_NAMES_FULL = ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
 const DAY_NAMES_SHORT = ['ВС','ПН','ВТ','СР','ЧТ','ПТ','СБ'];
 const MONTHS = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
 
 /* ============================================================
-   STATE — localStorage
+   STATE
    ============================================================ */
 const STORAGE_KEYS = {
-  completion: 'skin.completion.v1', // { 'YYYY-MM-DD': { am: [bool], pm: [bool] } }
-  log: 'skin.log.v1', // [{ date, sensitivity, redness, tags, text }]
-  settings: 'skin.settings.v1' // { startDate? }
+  completion: 'skin.completion.v2',
+  log: 'skin.log.v1',
+  fastlog: 'skin.fastlog.v1',
+  photos: 'skin.photos.v1',
+  pills: 'skin.pills.v1', // { 'YYYY-MM-DD': { pillId: bool } }
+  sport: 'skin.sport.v1', // { 'YYYY-MM-DD': 'gym' | 'badminton' | 'cardio' | 'yoga' | null }
+  office: 'skin.office.v1', // { 'YYYY-MM-DD': 'office' | 'home' | 'off' | null }
+  ui: 'skin.ui.v1' // { period: 'am' | 'pm', collapsedTrackers: { pills: bool, sport: bool, office: bool } }
 };
+
+const SPORT_TYPES = [
+  { id: 'gym', name: 'Зал', icon: '🏋' },
+  { id: 'badminton', name: 'Бадминтон', icon: '🏸' },
+  { id: 'cardio', name: 'Кардио', icon: '🏃' },
+  { id: 'yoga', name: 'Йога', icon: '🧘' }
+];
+
+const OFFICE_TYPES = [
+  { id: 'office', name: 'Офис', icon: '🏢' },
+  { id: 'home', name: 'Из дома', icon: '🏠' },
+  { id: 'off', name: 'Выходной', icon: '☕' }
+];
 
 function loadJSON(key, fallback) {
   try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
@@ -830,9 +1673,37 @@ function saveJSON(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
 
 let completion = loadJSON(STORAGE_KEYS.completion, {});
 let logEntries = loadJSON(STORAGE_KEYS.log, []);
+let fastlog = loadJSON(STORAGE_KEYS.fastlog, {});
+let photoSessions = loadJSON(STORAGE_KEYS.photos, []);
+let pillsData = loadJSON(STORAGE_KEYS.pills, {});
+let sportData = loadJSON(STORAGE_KEYS.sport, {});
+let officeData = loadJSON(STORAGE_KEYS.office, {});
+let uiState = loadJSON(STORAGE_KEYS.ui, { period: null, collapsedTrackers: { pills: true, sport: true, office: true } });
+
+// migration: добавить collapsedTrackers если его нет в старом UI state
+if (!uiState.collapsedTrackers) {
+  uiState.collapsedTrackers = { pills: true, sport: true, office: true };
+  saveJSON(STORAGE_KEYS.ui, uiState);
+}
+
+// auto-detect AM/PM по времени если не сохранено
+if (!uiState.period) {
+  const hr = new Date().getHours();
+  uiState.period = (hr >= 5 && hr < 17) ? 'am' : 'pm';
+  saveJSON(STORAGE_KEYS.ui, uiState);
+}
+
+// migration v1 → v2
+const v1completion = loadJSON('skin.completion.v1', null);
+if (v1completion && Object.keys(completion).length === 0) {
+  for (const [date, c] of Object.entries(v1completion)) {
+    completion[date] = { am: c.am || [], pm: c.pm || [], productsUsed: [] };
+  }
+  saveJSON(STORAGE_KEYS.completion, completion);
+}
 
 /* ============================================================
-   DATE HELPERS
+   HELPERS
    ============================================================ */
 function ymd(d) {
   const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), day = String(d.getDate()).padStart(2,'0');
@@ -848,7 +1719,6 @@ function diffDays(a, b) {
 }
 
 function getCurrentPhase(dateStr) {
-  // Возвращает {phase, dayInPhase}
   let active = PHASES[0];
   for (const p of PHASES) {
     if (dateStr >= p.startDate) active = p;
@@ -857,9 +1727,6 @@ function getCurrentPhase(dateStr) {
   return { phase: active, dayInPhase };
 }
 
-/* ============================================================
-   ROUTINE BUILDER
-   ============================================================ */
 function getRoutineForDate(dateStr) {
   const { phase, dayInPhase } = getCurrentPhase(dateStr);
   const dow = parseYmd(dateStr).getDay();
@@ -867,44 +1734,163 @@ function getRoutineForDate(dateStr) {
 
   if (phase.id === 2) {
     am = AM_PHASE1;
-    // AZ дни: первая неделя — Пн/Ср/Пт; вторая+ неделя — через день; через 4 недели — каждый день
     const weekInPhase = Math.floor((dayInPhase - 1) / 7);
     let isAzDay = false;
     if (weekInPhase === 0) {
-      isAzDay = (dow === 1 || dow === 3 || dow === 5); // Пн Ср Пт
+      isAzDay = (dow === 1 || dow === 3 || dow === 5);
     } else if (weekInPhase === 1) {
-      isAzDay = (dayInPhase % 2 === 1); // через день
+      isAzDay = (dayInPhase % 2 === 1);
     } else {
-      isAzDay = true; // каждый день
+      isAzDay = true;
     }
-    pm = PM_PHASE2_BASE.filter(s => isAzDay ? !s.noAz : !s.azDay);
+    pm = isAzDay ? PM_PHASE2_AZ : PM_PHASE2_REST;
   } else if (phase.id === 3) {
     am = AM_PHASE1;
-    // Ретиналь: Пн и Чт первые 4 недели, потом + Сб
     const weekInPhase = Math.floor((dayInPhase - 1) / 7);
     let isRetinalDay = false;
-    if (weekInPhase < 2) isRetinalDay = (dow === 4); // 1 раз в неделю
-    else if (weekInPhase < 4) isRetinalDay = (dow === 1 || dow === 4); // 2 раза
-    else isRetinalDay = (dow === 1 || dow === 4 || dow === 6); // 3 раза
-
-    pm = isRetinalDay ? PM_PHASE3_RETINAL : PM_PHASE2_BASE.filter(s => !s.azDay);
+    if (weekInPhase < 2) isRetinalDay = (dow === 4);
+    else if (weekInPhase < 4) isRetinalDay = (dow === 1 || dow === 4);
+    else isRetinalDay = (dow === 1 || dow === 4 || dow === 6);
+    pm = isRetinalDay ? PM_PHASE3_RETINAL : PM_PHASE2_REST;
   }
 
   const extra = WEEKLY_EXTRAS[dow] || null;
   return { phase, dayInPhase, am, pm, extra, dow };
 }
 
-/* ============================================================
-   COMPLETION
-   ============================================================ */
 function getCompletion(dateStr) {
-  if (!completion[dateStr]) completion[dateStr] = { am: [], pm: [] };
+  if (!completion[dateStr]) completion[dateStr] = { am: [], pm: [], productsUsed: [] };
+  if (!completion[dateStr].productsUsed) completion[dateStr].productsUsed = [];
   return completion[dateStr];
 }
+
+function recomputeProductsUsed(dateStr) {
+  const { am, pm } = getRoutineForDate(dateStr);
+  const c = getCompletion(dateStr);
+  const used = new Set();
+  am.forEach((s, i) => { if (c.am[i] && s.productKey) used.add(s.productKey); });
+  pm.forEach((s, i) => { if (c.pm[i] && s.productKey) used.add(s.productKey); });
+  c.productsUsed = [...used];
+}
+
+function getLast7DaysUsage(productKey, refDateStr) {
+  const ref = parseYmd(refDateStr);
+  const result = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(ref);
+    d.setDate(d.getDate() - i);
+    const dStr = ymd(d);
+    const c = completion[dStr];
+    const used = c?.productsUsed?.includes(productKey) ?? false;
+    result.push({ date: dStr, used, isToday: i === 0 });
+  }
+  return result;
+}
+
 function toggleStep(dateStr, period, idx) {
   const c = getCompletion(dateStr);
   c[period][idx] = !c[period][idx];
+  recomputeProductsUsed(dateStr);
   saveJSON(STORAGE_KEYS.completion, completion);
+}
+
+function togglePill(dateStr, pillId) {
+  if (!pillsData[dateStr]) pillsData[dateStr] = {};
+  pillsData[dateStr][pillId] = !pillsData[dateStr][pillId];
+  saveJSON(STORAGE_KEYS.pills, pillsData);
+}
+
+function setSport(dateStr, sportId) {
+  // tap selected = clear; tap different = set
+  if (sportData[dateStr] === sportId) {
+    delete sportData[dateStr];
+  } else {
+    sportData[dateStr] = sportId;
+  }
+  saveJSON(STORAGE_KEYS.sport, sportData);
+}
+
+function setOffice(dateStr, officeId) {
+  if (officeData[dateStr] === officeId) {
+    delete officeData[dateStr];
+  } else {
+    officeData[dateStr] = officeId;
+  }
+  saveJSON(STORAGE_KEYS.office, officeData);
+}
+
+function toggleTrackerGroup(group) {
+  uiState.collapsedTrackers[group] = !uiState.collapsedTrackers[group];
+  saveJSON(STORAGE_KEYS.ui, uiState);
+}
+
+/* ============================================================
+   CONFLICTS
+   ============================================================ */
+function detectConflicts(dateStr) {
+  const { phase, am, pm } = getRoutineForDate(dateStr);
+  const conflicts = [];
+
+  const todaysActives = [];
+  [...am, ...pm].forEach(s => {
+    if (s.isActive && s.activeFamily) {
+      todaysActives.push({ name: s.product, family: s.activeFamily });
+    }
+  });
+
+  const families = new Set(todaysActives.map(a => a.family));
+  if (families.has('azelaic') && families.has('retinoid')) {
+    conflicts.push({ level: 'danger', title: 'AZ + ретинол', text: 'Не используй азелаинку и ретиналь в один вечер. Перенеси одно на завтра.' });
+  }
+  if (families.has('bha') && families.has('retinoid')) {
+    conflicts.push({ level: 'danger', title: 'BHA + ретинол', text: 'Двойной раздражитель. Перенеси одно на завтра.' });
+  }
+  if (families.has('bha') && families.has('azelaic')) {
+    conflicts.push({ level: 'warn', title: 'AZ + BHA', text: 'Сочетание возможно, но даёт повышенную нагрузку.' });
+  }
+  if (phase.id === 1 && todaysActives.length > 0) {
+    conflicts.push({ level: 'danger', title: 'Активы на барьерной фазе', text: 'Phase 1 — никаких активов. Это против протокола.' });
+  }
+  if (phase.id === 3) {
+    const usage = getLast7DaysUsage('retinal', dateStr);
+    const used7days = usage.slice(0, 6).filter(d => d.used).length;
+    const todayHasRetinal = pm.some(s => s.productKey === 'retinal');
+    if (todayHasRetinal && used7days >= 3) {
+      conflicts.push({ level: 'warn', title: 'Ретиналь — 4-й раз за неделю', text: `За 7 дней уже ${used7days} нанесений. Сегодня лучше пропустить.` });
+    }
+  }
+  return conflicts;
+}
+
+/* ============================================================
+   PHOTO SCHEDULE
+   ============================================================ */
+function getPhotoInterval(phase) {
+  if (phase.id === 1) return 14;
+  if (phase.id === 2) return 21;
+  return 28;
+}
+
+function getNextPhotoDate(dateStr) {
+  const { phase } = getCurrentPhase(dateStr);
+  const interval = getPhotoInterval(phase);
+  let nextDate = parseYmd(phase.startDate);
+  while (true) {
+    const nextStr = ymd(nextDate);
+    if (nextStr >= dateStr) return nextStr;
+    nextDate.setDate(nextDate.getDate() + interval);
+    if (nextDate.getFullYear() > 2030) return null;
+  }
+}
+
+function isPhotoDay(dateStr) {
+  return getNextPhotoDate(dateStr) === dateStr;
+}
+
+function pluralDays(n) {
+  if (n % 10 === 1 && n % 100 !== 11) return 'день';
+  if ([2,3,4].includes(n % 10) && ![12,13,14].includes(n % 100)) return 'дня';
+  return 'дней';
 }
 
 /* ============================================================
@@ -914,75 +1900,225 @@ function renderToday() {
   const today = ymd(new Date());
   const { phase, dayInPhase, am, pm, extra } = getRoutineForDate(today);
 
-  // Header
-  document.getElementById('phaseBadge').textContent = phase.name.split(' — ')[0];
-  document.getElementById('phaseDay').textContent = dayInPhase;
+  document.getElementById('phaseBadge').textContent = phase.name + ' · день ' + dayInPhase;
 
-  // Date string
   const d = new Date();
   const dateStr = `${DAY_NAMES_FULL[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()].toLowerCase()}`;
   document.getElementById('todayDate').textContent = dateStr;
 
-  // Progress
   const c = getCompletion(today);
-  // Reset arrays if length doesn't match (phase changed)
   if (c.am.length !== am.length) c.am = new Array(am.length).fill(false);
   if (c.pm.length !== pm.length) c.pm = new Array(pm.length).fill(false);
 
-  const total = am.length + pm.length;
-  const done = c.am.filter(Boolean).length + c.pm.filter(Boolean).length;
-  document.getElementById('todayProgress').textContent = done;
-  document.getElementById('todayHeading').textContent =
-    done === total ? 'из ' + total + ' — готово' :
-    done === 0 ? 'из ' + total + ' шагов' :
-    'из ' + total;
-  document.getElementById('todaySub').innerHTML = `${phase.fullName}. День <span>${dayInPhase}</span> из ${phase.durationDays}.`;
+  // routine progress (skin only)
+  const skinTotal = am.length + pm.length;
+  const skinDone = c.am.filter(Boolean).length + c.pm.filter(Boolean).length;
 
-  // Ring
-  const circumference = 2 * Math.PI * 18;
+  // pills progress today
+  const todayPills = PILLS.filter(p => isPillDay(p, today));
+  const pillsToday = pillsData[today] || {};
+  const pillsDone = todayPills.filter(p => pillsToday[p.id]).length;
+
+  // overall
+  const total = skinTotal + todayPills.length;
+  const done = skinDone + pillsDone;
+
+  document.getElementById('todayHeading').textContent = `${done} из ${total} ${total === 1 ? 'шага' : 'шагов'}`;
+  document.getElementById('todaySub').innerHTML = `${phase.fullName}. День ${dayInPhase} из ${phase.durationDays}.`;
+
+  const circumference = 2 * Math.PI * 26;
   const ringFg = document.getElementById('ringFg');
   const pct = total > 0 ? done / total : 0;
   ringFg.setAttribute('stroke-dasharray', circumference);
   ringFg.setAttribute('stroke-dashoffset', circumference * (1 - pct));
-  document.getElementById('ringTitle').textContent = pct === 1 ? 'Все шаги выполнены' : pct === 0 ? 'Начни с утра' : 'Продолжай';
-  document.getElementById('ringMeta').textContent = `${done} / ${total} · ${Math.round(pct*100)}%`;
+  document.getElementById('ringText').textContent = `${Math.round(pct*100)}%`;
 
-  // AM steps
-  document.getElementById('amSteps').innerHTML = am.map((s, i) => stepHtml(s, i, c.am[i], 'am')).join('');
-  document.getElementById('pmSteps').innerHTML = pm.map((s, i) => stepHtml(s, i, c.pm[i], 'pm')).join('');
+  // pills meta
+  document.getElementById('pillsMeta').textContent = `${pillsDone} / ${todayPills.length}`;
 
-  // Weekly extra
+  // conflicts
+  const conflicts = detectConflicts(today);
+  document.getElementById('conflictWarnings').innerHTML = conflicts.map(c => `
+    <div class="warning-banner ${c.level === 'danger' ? 'danger' : ''}">
+      <div class="icon">!</div>
+      <div class="body">
+        <div class="ttl">${c.title}</div>
+        <div class="text">${c.text}</div>
+      </div>
+    </div>
+  `).join('');
+
+  renderPhotoWidget(today);
+
+  // routine title + steps
+  const period = uiState.period;
+  document.getElementById('routineTitle').textContent = period === 'am' ? 'Утренняя рутина' : 'Вечерняя рутина';
+
+  document.querySelectorAll('#amPmToggle .knob').forEach(k => {
+    k.classList.toggle('active', k.dataset.period === period);
+  });
+
+  const steps = period === 'am' ? am : pm;
+  const completionArr = c[period];
+
+  document.getElementById('stepsList').innerHTML = steps.map((s, i) =>
+    stepRowHtml(s, i, completionArr[i], period, today)
+  ).join('');
+
+  // weekly extra
   const extraEl = document.getElementById('weeklyExtra');
   if (extra) {
     extraEl.innerHTML = `
-      <div class="card" style="background:var(--paper-2); border-style:dashed;">
-        <div class="label" style="margin-bottom:6px;">Дополнительно сегодня</div>
-        <h2 style="font-style:italic; font-size:18px; font-weight:300;">${extra.name}</h2>
-        <div style="font-size:13px; color:var(--ink-soft); margin-top:4px; font-style:italic;">${extra.product}</div>
-        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink-faint); margin-top:6px;">${extra.note}</div>
+      <div class="extra-card">
+        <div class="label">Дополнительно сегодня</div>
+        <div class="ttl">${extra.name}</div>
+        <div class="desc">${extra.product}</div>
+        <div class="note">${extra.note}</div>
       </div>
     `;
   } else {
     extraEl.innerHTML = '';
   }
+
+  // pills
+  document.getElementById('pillsList').innerHTML = PILLS.map(p => pillCardHtml(p, today)).join('');
+
+  // sport chips
+  const todaySport = sportData[today] || null;
+  document.querySelectorAll('#sportChips .chip').forEach(chip => {
+    chip.classList.toggle('active', chip.dataset.sport === todaySport);
+  });
+  const sportLabel = todaySport ? SPORT_TYPES.find(s => s.id === todaySport)?.name : 'не отмечено';
+  document.getElementById('sportTodayLabel').textContent = sportLabel;
+
+  // office chips
+  const todayOffice = officeData[today] || null;
+  document.querySelectorAll('#officeChips .chip').forEach(chip => {
+    chip.classList.toggle('active', chip.dataset.office === todayOffice);
+  });
+  const officeLabel = todayOffice ? OFFICE_TYPES.find(o => o.id === todayOffice)?.name : 'не отмечено';
+  document.getElementById('officeTodayLabel').textContent = officeLabel;
+
+  // fast-log state
+  const todaysFastlog = fastlog[today] || [];
+  document.querySelectorAll('#fastlogPills .fpill').forEach(pill => {
+    pill.classList.toggle('active', todaysFastlog.includes(pill.dataset.tag));
+  });
 }
 
-function stepHtml(s, i, done, period) {
-  const conditional = s.conditional ? '<div class="note" style="color:var(--warn);">⏵ только если был SPF/макияж</div>' : '';
-  const optional = s.optional ? '<div class="note" style="color:var(--ink-faint);">⏵ опционально</div>' : '';
-  const timer = s.timer ? `<div class="note" style="color:var(--accent);">⏱ пауза ${s.timer} мин</div>` : '';
+function stepRowHtml(s, i, done, period, today) {
+  let usageBars = '';
+  if (s.isActive && s.productKey) {
+    const usage = getLast7DaysUsage(s.productKey, today);
+    const bars = usage.map(d => {
+      const cls = `bar ${d.used ? 'used' : ''} ${d.isToday ? 'today' : ''}`;
+      return `<div class="${cls}" title="${d.date}"></div>`;
+    }).join('');
+    const usedCount = usage.filter(d => d.used).length;
+    usageBars = `<div class="usage-bars"><span class="day-label">7д · ${usedCount}/7</span>${bars}</div>`;
+  }
+
+  const conditional = s.conditional ? `<div class="step-note warn">если был SPF/макияж</div>` : '';
+  const optional = s.optional ? `<div class="step-note">опционально</div>` : '';
+  const activeTag = s.isActive ? '<span class="active-tag">актив</span>' : '';
+
   return `
-    <div class="step ${done?'done':''}" data-period="${period}" data-idx="${i}">
-      <div class="check"></div>
-      <div class="step-body">
-        <div class="num">${s.num}</div>
-        <div class="name">${s.name}</div>
-        <div class="product">${s.product}</div>
-        <div class="note">${s.note}</div>
-        ${conditional}${optional}${timer}
+    <div class="step-row ${done ? 'done' : ''}" data-period="${period}" data-idx="${i}">
+      <div class="step-marker">
+        <div class="num-circle ${done ? 'done' : ''}">${s.num}</div>
+        <div class="connector"></div>
+      </div>
+      <div class="step-card">
+        <div class="placeholder ${s.cat}">${s.abbr}</div>
+        <div class="step-info">
+          <div class="step-name">${s.name}${activeTag}</div>
+          <div class="step-product">${s.product}</div>
+          <div class="step-note">${s.note}</div>
+          ${conditional}${optional}
+          ${usageBars}
+        </div>
+        <div class="check-btn"></div>
       </div>
     </div>
   `;
+}
+
+function pillCardHtml(p, dateStr) {
+  const isDue = isPillDay(p, dateStr);
+  const todayPills = pillsData[dateStr] || {};
+  const taken = todayPills[p.id] || false;
+
+  if (!isDue) {
+    return `
+      <div class="pill-card skip-day" data-pill="${p.id}" data-due="0">
+        <div class="pill-icon">${p.icon}</div>
+        <div class="pill-info">
+          <div class="pill-name">${p.name}</div>
+          <div class="pill-schedule">Сегодня не нужно · ${getScheduleLabel(p)}</div>
+        </div>
+        <div class="pill-check"></div>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="pill-card ${taken ? 'done' : ''}" data-pill="${p.id}" data-due="1">
+      <div class="pill-icon">${p.icon}</div>
+      <div class="pill-info">
+        <div class="pill-name">${p.name}</div>
+        <div class="pill-schedule">${getScheduleLabel(p)} · ${p.note}</div>
+      </div>
+      <div class="pill-check"></div>
+    </div>
+  `;
+}
+
+function renderPhotoWidget(today) {
+  const next = getNextPhotoDate(today);
+  const widgetEl = document.getElementById('photoWidget');
+
+  if (!next) { widgetEl.innerHTML = ''; return; }
+
+  const isDue = next === today;
+  const daysUntil = diffDays(today, next);
+
+  if (daysUntil > 7 && !isDue) { widgetEl.innerHTML = ''; return; }
+
+  const nextDate = parseYmd(next);
+  const niceDate = `${nextDate.getDate()} ${MONTHS[nextDate.getMonth()].toLowerCase()}`;
+
+  const title = isDue ? 'Сегодня день фотосессии' : `Фотосессия через ${daysUntil} ${pluralDays(daysUntil)}`;
+  const meta = isDue ? 'Утром, до умывания · 5 шотов' : `${niceDate} · стандартный протокол`;
+
+  widgetEl.innerHTML = `
+    <div class="photo-widget ${isDue?'due-today':''}" id="photoWidgetClick">
+      <div class="icon-box">
+        <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>
+      </div>
+      <div class="text-block">
+        <div class="ttl">${title}</div>
+        <div class="meta">${meta}</div>
+      </div>
+      <div class="arrow">›</div>
+    </div>
+  `;
+
+  document.getElementById('photoWidgetClick').addEventListener('click', () => {
+    document.getElementById('photoModal').classList.add('show');
+  });
+}
+
+function toggleFastlog(tag) {
+  const today = ymd(new Date());
+  if (!fastlog[today]) fastlog[today] = [];
+  const idx = fastlog[today].indexOf(tag);
+  if (idx >= 0) fastlog[today].splice(idx, 1);
+  else fastlog[today].push(tag);
+  saveJSON(STORAGE_KEYS.fastlog, fastlog);
+  const saved = document.getElementById('fastlogSaved');
+  saved.classList.add('show');
+  clearTimeout(window._fastlogTimeout);
+  window._fastlogTimeout = setTimeout(() => saved.classList.remove('show'), 1500);
 }
 
 /* ============================================================
@@ -997,14 +2133,12 @@ function renderCalendar() {
 
   const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month+1, 0);
-  // Monday = 0
   let startWeekday = (firstDay.getDay() + 6) % 7;
   const daysInMonth = lastDay.getDate();
 
   let html = '';
   ['ПН','ВТ','СР','ЧТ','ПТ','СБ','ВС'].forEach(d => html += `<div class="dow">${d}</div>`);
 
-  // Prev month tail
   const prevLastDay = new Date(year, month, 0).getDate();
   for (let i = startWeekday - 1; i >= 0; i--) {
     html += `<div class="cal-day other">${prevLastDay - i}</div>`;
@@ -1017,8 +2151,9 @@ function renderCalendar() {
     const amDone = c.am.length > 0 && c.am.every(Boolean);
     const pmDone = c.pm.length > 0 && c.pm.every(Boolean);
     const isToday = dStr === todayStr;
+    const isPhoto = isPhotoDay(dStr);
     html += `
-      <div class="cal-day ${isToday?'today':''}" data-date="${dStr}">
+      <div class="cal-day ${isToday?'today':''} ${isPhoto?'photo-day':''}" data-date="${dStr}">
         ${d}
         <div class="indicator">
           <span class="${amDone?'am-done':''}"></span>
@@ -1028,7 +2163,6 @@ function renderCalendar() {
     `;
   }
 
-  // Next month head
   const totalCells = startWeekday + daysInMonth;
   const trailing = (7 - (totalCells % 7)) % 7;
   for (let i = 1; i <= trailing; i++) {
@@ -1037,15 +2171,13 @@ function renderCalendar() {
 
   document.getElementById('calGrid').innerHTML = html;
 
-  // Phase info
   const todayPhase = getCurrentPhase(todayStr);
-  document.getElementById('currentPhaseLabel').textContent = todayPhase.phase.name.split(' — ')[0];
+  document.getElementById('phaseInfoTitle').textContent = todayPhase.phase.fullName;
   document.getElementById('phaseInfo').innerHTML = `
-    <h3 style="font-style:italic; font-weight:300; font-size:18px; margin-bottom:6px;">${todayPhase.phase.fullName}</h3>
-    <div class="label" style="margin-bottom:10px;">День ${todayPhase.dayInPhase} из ${todayPhase.phase.durationDays}</div>
-    <p style="font-size:14px; color:var(--ink-soft); line-height:1.5; margin-bottom:12px;">${todayPhase.phase.description}</p>
+    <div class="label" style="margin-bottom:10px;">${todayPhase.phase.name} · день ${todayPhase.dayInPhase} из ${todayPhase.phase.durationDays}</div>
+    <p style="font-size:13px; color:var(--ink-soft); line-height:1.5; margin-bottom:12px;">${todayPhase.phase.description}</p>
     <div style="border-top:1px dashed var(--line); padding-top:12px;">
-      ${todayPhase.phase.rules.map(r => `<div style="font-size:13px; color:var(--ink); padding:4px 0;">— ${r}</div>`).join('')}
+      ${todayPhase.phase.rules.map(r => `<div style="font-size:13px; padding:4px 0;">— ${r}</div>`).join('')}
     </div>
   `;
 }
@@ -1058,6 +2190,18 @@ function showCalDetail(dateStr) {
   const pmDone = c.pm.filter(Boolean).length;
 
   const log = logEntries.find(e => e.date === dateStr);
+  const fastlogToday = fastlog[dateStr] || [];
+  const isPhoto = isPhotoDay(dateStr);
+  const photoTaken = photoSessions.includes(dateStr);
+
+  // pills for this date
+  const duePills = PILLS.filter(p => isPillDay(p, dateStr));
+  const takenToday = pillsData[dateStr] || {};
+  const pillsTaken = duePills.filter(p => takenToday[p.id]).length;
+
+  // sport/office for this date
+  const sportToday = sportData[dateStr] ? SPORT_TYPES.find(s => s.id === sportData[dateStr]) : null;
+  const officeToday = officeData[dateStr] ? OFFICE_TYPES.find(o => o.id === officeData[dateStr]) : null;
 
   document.getElementById('calDetail').style.display = 'block';
   document.getElementById('calDetailTitle').textContent =
@@ -1073,17 +2217,42 @@ function showCalDetail(dateStr) {
         <span class="label">Вечер</span>
         <div class="val">${pmDone} / ${pm.length}</div>
       </div>
+      <div class="stat">
+        <span class="label">Таблетки</span>
+        <div class="val">${pillsTaken} / ${duePills.length}</div>
+      </div>
+      <div class="stat">
+        <span class="label">Контекст</span>
+        <div class="val">${fastlogToday.length}</div>
+      </div>
     </div>
+    ${(sportToday || officeToday) ? `
+      <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+        ${sportToday ? `<div style="background:var(--surface); padding:6px 12px; border-radius:100px; font-size:12px; border:1px solid var(--line-soft);">${sportToday.icon} ${sportToday.name}</div>` : ''}
+        ${officeToday ? `<div style="background:var(--surface); padding:6px 12px; border-radius:100px; font-size:12px; border:1px solid var(--line-soft);">${officeToday.icon} ${officeToday.name}</div>` : ''}
+      </div>
+    ` : ''}
+    ${isPhoto ? `
+      <div style="margin-top:12px; padding:10px 12px; background:var(--green-faint); border-radius:var(--radius); border:1px solid var(--green-soft);">
+        <span class="label" style="color:var(--green);">Фотосессия</span>
+        <div style="font-size:13px; margin-top:2px;">${photoTaken ? '✓ Сессия записана' : 'Запланирована'}</div>
+      </div>
+    ` : ''}
+    ${fastlogToday.length ? `
+      <div style="margin-top:12px;">
+        <span class="label" style="display:block; margin-bottom:6px;">Контекст дня</span>
+        ${fastlogToday.map(t => `<span style="font-size:11px; background:var(--bg-2); padding:3px 8px; border-radius:100px; margin-right:4px; display:inline-block; margin-bottom:3px;">${t}</span>`).join('')}
+      </div>
+    ` : ''}
     ${log ? `
       <div style="margin-top:14px; padding-top:14px; border-top:1px dashed var(--line);">
         <div class="label" style="margin-bottom:6px;">Запись в логе</div>
         ${log.sensitivity || log.redness ? `
-          <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-soft); margin-bottom:6px;">
+          <div style="font-size:12px; color:var(--ink-soft); margin-bottom:6px;">
             ${log.sensitivity ? `чувств. ${log.sensitivity}` : ''}${log.sensitivity && log.redness ? ' · ' : ''}${log.redness ? `красн. ${log.redness}` : ''}
           </div>
         ` : ''}
-        ${log.tags?.length ? `<div style="margin-bottom:6px;">${log.tags.map(t => `<span style="font-family:'JetBrains Mono',monospace; font-size:10px; background:#fefcf8; padding:2px 7px; border-radius:3px; margin-right:4px;">${t}</span>`).join('')}</div>` : ''}
-        ${log.text ? `<div style="font-size:14px; line-height:1.5;">${log.text}</div>` : ''}
+        ${log.text ? `<div style="font-size:13px; line-height:1.5;">${log.text}</div>` : ''}
       </div>
     ` : ''}
   `;
@@ -1123,70 +2292,244 @@ function escapeHtml(s) {
 }
 
 /* ============================================================
-   TIMER
+   RENDER: PILLS HISTORY TAB
    ============================================================ */
-let timerState = { running: false, endsAt: null, durationMin: 0, intervalId: null };
+function renderPillsHistory() {
+  const today = ymd(new Date());
+  const days = 30;
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - (days - 1));
 
-function startTimer(min) {
-  stopTimer(false);
-  timerState.durationMin = min;
-  timerState.endsAt = Date.now() + min * 60 * 1000;
-  timerState.running = true;
-  timerState.intervalId = setInterval(updateTimerDisplay, 250);
-  document.getElementById('timerStage').textContent = `Идёт · ${min} мин`;
-  document.getElementById('timerNext').style.display = 'none';
-  updateTimerDisplay();
-}
-
-function stopTimer(silent = true) {
-  if (timerState.intervalId) clearInterval(timerState.intervalId);
-  timerState.running = false;
-  timerState.intervalId = null;
-  if (!silent) {
-    document.getElementById('timerClock').textContent = '00:00';
-    document.getElementById('timerStage').textContent = 'Остановлен';
-    document.getElementById('timerNext').style.display = 'none';
+  // overall summary
+  let totalDue = 0, totalTaken = 0;
+  for (let i = 0; i < days; i++) {
+    const d = new Date(startDate);
+    d.setDate(d.getDate() + i);
+    const dStr = ymd(d);
+    const taken = pillsData[dStr] || {};
+    PILLS.forEach(p => {
+      if (isPillDay(p, dStr)) {
+        totalDue++;
+        if (taken[p.id]) totalTaken++;
+      }
+    });
   }
+  const adherence = totalDue > 0 ? Math.round((totalTaken / totalDue) * 100) : 0;
+  document.getElementById('pillsTabSummary').textContent =
+    `Последние 30 дней`;
+  document.getElementById('pillsGroupMeta').textContent = `${adherence}% · ${totalTaken}/${totalDue}`;
+
+  // per-pill grids
+  let html = '';
+  PILLS.forEach(p => {
+    let pillDue = 0, pillTaken = 0, pillMissed = 0;
+    let cells = '';
+    for (let i = 0; i < days; i++) {
+      const d = new Date(startDate);
+      d.setDate(d.getDate() + i);
+      const dStr = ymd(d);
+      const isFuture = dStr > today;
+      const due = isPillDay(p, dStr);
+      const taken = (pillsData[dStr] || {})[p.id];
+
+      let cls = 'cell';
+      if (!due) cls += ' not-due';
+      else if (taken) { cls += ' taken'; pillTaken++; pillDue++; }
+      else if (isFuture) { cls += ' future not-due'; }
+      else { cls += ' missed'; pillMissed++; pillDue++; }
+
+      cells += `<div class="${cls}" title="${dStr}"></div>`;
+    }
+
+    const pillAdh = pillDue > 0 ? Math.round((pillTaken / pillDue) * 100) : 0;
+
+    html += `
+      <div class="pill-history">
+        <div class="head">
+          <div class="pill-icon" style="width:36px; height:36px; background:var(--green-tint); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px;">${p.icon}</div>
+          <div style="flex:1;">
+            <div class="name">${p.name}</div>
+            <div class="schedule">${getScheduleLabel(p)} · ${p.description}</div>
+          </div>
+        </div>
+        <div class="stat-line">
+          <div class="stat-item"><strong>${pillAdh}%</strong>adherence</div>
+          <div class="stat-item"><strong>${pillTaken}</strong>принято</div>
+          <div class="stat-item"><strong>${pillMissed}</strong>пропущено</div>
+        </div>
+        <div class="pill-history-grid">${cells}</div>
+        <div class="pill-legend">
+          <div class="legend-item"><div class="legend-square taken"></div>Принято</div>
+          <div class="legend-item"><div class="legend-square missed"></div>Пропуск</div>
+          <div class="legend-item"><div class="legend-square"></div>Не нужно</div>
+        </div>
+      </div>
+    `;
+  });
+
+  document.getElementById('pillsHistoryList').innerHTML = html;
+
+  renderSportHistory();
+  renderOfficeHistory();
+  applyTrackerCollapsedState();
 }
 
-function updateTimerDisplay() {
-  if (!timerState.running) return;
-  const remaining = Math.max(0, timerState.endsAt - Date.now());
-  const totalSec = Math.ceil(remaining / 1000);
-  const m = Math.floor(totalSec / 60);
-  const s = totalSec % 60;
-  document.getElementById('timerClock').textContent =
-    `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  if (remaining <= 0) {
-    timerDone();
+function renderSportHistory() {
+  const today = ymd(new Date());
+  const days = 30;
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - (days - 1));
+
+  // breakdown by sport type
+  const counts = {};
+  SPORT_TYPES.forEach(s => counts[s.id] = 0);
+  let totalActive = 0;
+  let cells = '';
+
+  for (let i = 0; i < days; i++) {
+    const d = new Date(startDate);
+    d.setDate(d.getDate() + i);
+    const dStr = ymd(d);
+    const isFuture = dStr > today;
+    const sport = sportData[dStr];
+
+    let cls = 'cell';
+    let label = '';
+    if (sport) {
+      cls += ' active';
+      const t = SPORT_TYPES.find(s => s.id === sport);
+      label = t?.icon || '';
+      counts[sport]++;
+      totalActive++;
+    } else if (isFuture) {
+      cls += ' future';
+    }
+    cells += `<div class="${cls}" title="${dStr}${sport ? ' · ' + sport : ''}">${label}</div>`;
   }
+
+  // weekly average
+  const weeks = days / 7;
+  const avgPerWeek = (totalActive / weeks).toFixed(1);
+
+  document.getElementById('sportGroupMeta').textContent = `${totalActive} тр · ${avgPerWeek}/нед`;
+
+  // breakdown rows
+  const breakdownHtml = SPORT_TYPES.map(s => {
+    const count = counts[s.id];
+    const pct = totalActive > 0 ? (count / totalActive) * 100 : 0;
+    return `
+      <div class="row">
+        <span class="row-icon">${s.icon}</span>
+        <span class="row-name">${s.name}</span>
+        <span class="row-count">${count}</span>
+      </div>
+      <div class="row-bar"><div class="row-bar-fill" style="width:${pct}%"></div></div>
+    `;
+  }).join('');
+
+  document.getElementById('sportHistory').innerHTML = `
+    <div class="activity-summary">
+      <div class="stat-cell">
+        <span class="label">Тренировок</span>
+        <div class="val">${totalActive}</div>
+      </div>
+      <div class="stat-cell">
+        <span class="label">В среднем/нед</span>
+        <div class="val">${avgPerWeek}</div>
+      </div>
+    </div>
+    <div class="activity-breakdown">${breakdownHtml}</div>
+    <div class="activity-grid">${cells}</div>
+    <div style="margin-top:10px; font-size:11px; color:var(--ink-faint);">Сетка — последние 30 дней. Зелёные ячейки = тренировка.</div>
+  `;
 }
 
-function timerDone() {
-  stopTimer(true);
-  document.getElementById('timerClock').textContent = '00:00';
-  document.getElementById('timerStage').textContent = 'Готово';
-  document.getElementById('timerNext').style.display = 'block';
-  document.getElementById('timerNext').textContent = 'Время вышло. Можно наносить следующий шаг.';
-  // Vibration if supported
-  if (navigator.vibrate) navigator.vibrate([200,100,200,100,400]);
-  // Sound
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-    o.frequency.value = 600; g.gain.value = 0.15;
-    o.start(); setTimeout(() => { o.frequency.value = 800; }, 200);
-    setTimeout(() => { o.stop(); ctx.close(); }, 500);
-  } catch(e) {}
+function renderOfficeHistory() {
+  const today = ymd(new Date());
+  const days = 30;
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - (days - 1));
+
+  const counts = {};
+  OFFICE_TYPES.forEach(o => counts[o.id] = 0);
+  let totalLogged = 0;
+  let cells = '';
+
+  for (let i = 0; i < days; i++) {
+    const d = new Date(startDate);
+    d.setDate(d.getDate() + i);
+    const dStr = ymd(d);
+    const isFuture = dStr > today;
+    const office = officeData[dStr];
+
+    let cls = 'cell';
+    let label = '';
+    if (office) {
+      cls += ' active';
+      const t = OFFICE_TYPES.find(o => o.id === office);
+      label = t?.icon || '';
+      counts[office]++;
+      totalLogged++;
+    } else if (isFuture) {
+      cls += ' future';
+    }
+    cells += `<div class="${cls}" title="${dStr}${office ? ' · ' + office : ''}">${label}</div>`;
+  }
+
+  const officeDays = counts.office;
+  const homeDays = counts.home;
+  const workDays = officeDays + homeDays;
+  const officePct = workDays > 0 ? Math.round((officeDays / workDays) * 100) : 0;
+
+  document.getElementById('officeGroupMeta').textContent = `${officeDays} офис · ${homeDays} дома`;
+
+  const breakdownHtml = OFFICE_TYPES.map(o => {
+    const count = counts[o.id];
+    const pct = totalLogged > 0 ? (count / totalLogged) * 100 : 0;
+    return `
+      <div class="row">
+        <span class="row-icon">${o.icon}</span>
+        <span class="row-name">${o.name}</span>
+        <span class="row-count">${count}</span>
+      </div>
+      <div class="row-bar"><div class="row-bar-fill" style="width:${pct}%"></div></div>
+    `;
+  }).join('');
+
+  document.getElementById('officeHistory').innerHTML = `
+    <div class="activity-summary">
+      <div class="stat-cell">
+        <span class="label">В офисе</span>
+        <div class="val">${officeDays}</div>
+      </div>
+      <div class="stat-cell">
+        <span class="label">% офис от рабочих</span>
+        <div class="val">${officePct}%</div>
+      </div>
+    </div>
+    <div class="activity-breakdown">${breakdownHtml}</div>
+    <div class="activity-grid">${cells}</div>
+    <div style="margin-top:10px; font-size:11px; color:var(--ink-faint);">🏢 Офис · 🏠 Из дома · ☕ Выходной</div>
+  `;
+}
+
+function applyTrackerCollapsedState() {
+  ['pills', 'sport', 'office'].forEach(group => {
+    const head = document.querySelector(`.tracker-group-head[data-group="${group}"]`);
+    if (!head) return;
+    const groupEl = head.closest('.tracker-group');
+    if (uiState.collapsedTrackers[group]) {
+      groupEl.classList.add('collapsed');
+    } else {
+      groupEl.classList.remove('collapsed');
+    }
+  });
 }
 
 /* ============================================================
-   EVENT BINDINGS
+   EVENTS
    ============================================================ */
 
-// Nav
 document.querySelectorAll('.nav-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const target = btn.dataset.screen;
@@ -1197,19 +2540,72 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
     if (target === 'today') renderToday();
     if (target === 'calendar') renderCalendar();
     if (target === 'log') renderLog();
+    if (target === 'pills') renderPillsHistory();
     window.scrollTo(0, 0);
   });
 });
 
-// Steps (delegated)
-document.addEventListener('click', (e) => {
-  const step = e.target.closest('.step');
-  if (step) {
-    const period = step.dataset.period;
-    const idx = parseInt(step.dataset.idx);
+// AM/PM toggle
+document.querySelectorAll('#amPmToggle .knob').forEach(knob => {
+  knob.addEventListener('click', () => {
+    uiState.period = knob.dataset.period;
+    saveJSON(STORAGE_KEYS.ui, uiState);
+    renderToday();
+  });
+});
+
+// Step rows (skin routine)
+document.getElementById('stepsList').addEventListener('click', (e) => {
+  const row = e.target.closest('.step-row');
+  if (row) {
+    const period = row.dataset.period;
+    const idx = parseInt(row.dataset.idx);
     toggleStep(ymd(new Date()), period, idx);
     renderToday();
   }
+});
+
+// Pill cards
+document.getElementById('pillsList').addEventListener('click', (e) => {
+  const card = e.target.closest('.pill-card');
+  if (card && card.dataset.due === '1') {
+    togglePill(ymd(new Date()), card.dataset.pill);
+    renderToday();
+  }
+});
+
+// Sport chips (single-select with toggle off)
+document.getElementById('sportChips').addEventListener('click', (e) => {
+  const chip = e.target.closest('.chip');
+  if (!chip) return;
+  setSport(ymd(new Date()), chip.dataset.sport);
+  renderToday();
+});
+
+// Office chips (single-select with toggle off)
+document.getElementById('officeChips').addEventListener('click', (e) => {
+  const chip = e.target.closest('.chip');
+  if (!chip) return;
+  setOffice(ymd(new Date()), chip.dataset.office);
+  renderToday();
+});
+
+// Tracker group collapse/expand (Trackers tab)
+document.getElementById('screen-pills').addEventListener('click', (e) => {
+  const head = e.target.closest('.tracker-group-head');
+  if (!head) return;
+  const group = head.dataset.group;
+  toggleTrackerGroup(group);
+  applyTrackerCollapsedState();
+});
+
+// Fast-log pills
+document.querySelectorAll('#fastlogPills .fpill').forEach(pill => {
+  pill.addEventListener('click', (e) => {
+    e.stopPropagation();
+    pill.classList.toggle('active');
+    toggleFastlog(pill.dataset.tag);
+  });
 });
 
 // Calendar nav
@@ -1224,8 +2620,7 @@ document.getElementById('calNext').addEventListener('click', () => {
   renderCalendar();
 });
 
-// Calendar day click
-document.addEventListener('click', (e) => {
+document.getElementById('screen-calendar').addEventListener('click', (e) => {
   const day = e.target.closest('.cal-day');
   if (day && day.dataset.date) {
     document.querySelectorAll('.cal-day').forEach(d => d.classList.remove('selected'));
@@ -1234,12 +2629,11 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// Log tags
+// Log
 document.querySelectorAll('#logTags .pill').forEach(pill => {
   pill.addEventListener('click', () => pill.classList.toggle('active'));
 });
 
-// Save log
 document.getElementById('saveLog').addEventListener('click', () => {
   const date = ymd(new Date());
   const sensitivity = document.getElementById('logSensitivity').value;
@@ -1252,7 +2646,6 @@ document.getElementById('saveLog').addEventListener('click', () => {
     return;
   }
 
-  // Replace existing entry for today, or append
   const existing = logEntries.findIndex(e => e.date === date);
   const entry = { date, sensitivity, redness, tags, text, ts: Date.now() };
   if (existing >= 0) logEntries[existing] = entry;
@@ -1260,7 +2653,6 @@ document.getElementById('saveLog').addEventListener('click', () => {
 
   saveJSON(STORAGE_KEYS.log, logEntries);
 
-  // Reset form
   document.getElementById('logSensitivity').value = '';
   document.getElementById('logRedness').value = '';
   document.getElementById('logText').value = '';
@@ -1269,10 +2661,10 @@ document.getElementById('saveLog').addEventListener('click', () => {
   renderLog();
 });
 
-// Export log to markdown
 document.getElementById('exportLog').addEventListener('click', () => {
   const sorted = [...logEntries].sort((a,b) => a.date.localeCompare(b.date));
   let md = `# SKIN LOG EXPORT\n\nДата экспорта: ${ymd(new Date())}\nЗаписей: ${sorted.length}\n\n---\n\n`;
+
   for (const e of sorted) {
     md += `## ${e.date}\n\n`;
     if (e.sensitivity) md += `- Чувствительность: ${e.sensitivity}/10\n`;
@@ -1281,17 +2673,42 @@ document.getElementById('exportLog').addEventListener('click', () => {
     if (e.text) md += `\n${e.text}\n`;
     md += `\n---\n\n`;
   }
-  // Also include completion stats
-  md += `## Статистика рутины\n\n`;
-  const days = Object.keys(completion).sort();
-  for (const d of days) {
+
+  md += `## Контекст-логи (fast-log)\n\n`;
+  Object.keys(fastlog).sort().forEach(d => {
+    if (fastlog[d]?.length) md += `- ${d}: ${fastlog[d].join(', ')}\n`;
+  });
+
+  if (photoSessions.length) {
+    md += `\n## Фотосессии\n\n`;
+    [...photoSessions].sort().forEach(d => md += `- ${d}\n`);
+  }
+
+  md += `\n## Таблетки\n\n`;
+  Object.keys(pillsData).sort().forEach(d => {
+    const taken = Object.entries(pillsData[d]).filter(([k,v]) => v).map(([k]) => k);
+    if (taken.length) md += `- ${d}: ${taken.join(', ')}\n`;
+  });
+
+  md += `\n## Спорт\n\n`;
+  Object.keys(sportData).sort().forEach(d => {
+    if (sportData[d]) md += `- ${d}: ${sportData[d]}\n`;
+  });
+
+  md += `\n## Где работала\n\n`;
+  Object.keys(officeData).sort().forEach(d => {
+    if (officeData[d]) md += `- ${d}: ${officeData[d]}\n`;
+  });
+
+  md += `\n## Статистика рутины\n\n`;
+  Object.keys(completion).sort().forEach(d => {
     const c = completion[d];
     const amDone = c.am.filter(Boolean).length;
     const pmDone = c.pm.filter(Boolean).length;
     if (amDone || pmDone) {
       md += `- ${d}: AM ${amDone}/${c.am.length}, PM ${pmDone}/${c.pm.length}\n`;
     }
-  }
+  });
 
   const blob = new Blob([md], { type: 'text/markdown' });
   const url = URL.createObjectURL(blob);
@@ -1302,38 +2719,41 @@ document.getElementById('exportLog').addEventListener('click', () => {
   URL.revokeObjectURL(url);
 });
 
-// Reset data
 document.getElementById('resetData').addEventListener('click', () => {
-  if (!confirm('Удалить все локальные данные (рутина + лог)? Это нельзя отменить.')) return;
-  localStorage.removeItem(STORAGE_KEYS.completion);
-  localStorage.removeItem(STORAGE_KEYS.log);
-  completion = {};
-  logEntries = [];
-  renderToday();
-  renderLog();
+  if (!confirm('Удалить все локальные данные? Рутина, лог, фото, таблетки, спорт и офис.')) return;
+  if (!confirm('Точно? Это нельзя отменить.')) return;
+  Object.values(STORAGE_KEYS).forEach(k => localStorage.removeItem(k));
+  localStorage.removeItem('skin.completion.v1');
+  completion = {}; logEntries = []; fastlog = {}; photoSessions = [];
+  pillsData = {}; sportData = {}; officeData = {};
+  uiState = { period: null, collapsedTrackers: { pills: true, sport: true, office: true } };
+  if (!uiState.period) {
+    const hr = new Date().getHours();
+    uiState.period = (hr >= 5 && hr < 17) ? 'am' : 'pm';
+  }
+  saveJSON(STORAGE_KEYS.ui, uiState);
+  renderToday(); renderLog();
   alert('Данные сброшены.');
 });
 
-// Timer presets
-document.querySelectorAll('.timer-preset').forEach(p => {
-  p.addEventListener('click', () => {
-    document.querySelectorAll('.timer-preset').forEach(x => x.classList.remove('active'));
-    p.classList.add('active');
-    const min = parseInt(p.dataset.min);
-    document.getElementById('timerClock').textContent = `${String(min).padStart(2,'0')}:00`;
-    document.getElementById('timerStage').textContent = `Готов · ${min} мин`;
-    document.getElementById('timerNext').style.display = 'none';
-    timerState.durationMin = min;
-  });
+// Photo modal
+document.getElementById('photoCloseBtn').addEventListener('click', () => {
+  document.getElementById('photoModal').classList.remove('show');
 });
-
-document.getElementById('timerStart').addEventListener('click', () => {
-  if (!timerState.durationMin) { alert('Сначала выбери таймер ниже.'); return; }
-  startTimer(timerState.durationMin);
+document.getElementById('photoTakenBtn').addEventListener('click', () => {
+  const today = ymd(new Date());
+  if (!photoSessions.includes(today)) {
+    photoSessions.push(today);
+    saveJSON(STORAGE_KEYS.photos, photoSessions);
+  }
+  document.getElementById('photoModal').classList.remove('show');
+  renderToday();
+  alert('Сессия записана. Не забудь загрузить фото в проект и обновить SKIN_LOG_2026.md.');
 });
-
-document.getElementById('timerStop').addEventListener('click', () => {
-  stopTimer(false);
+document.getElementById('photoModal').addEventListener('click', (e) => {
+  if (e.target.id === 'photoModal') {
+    document.getElementById('photoModal').classList.remove('show');
+  }
 });
 
 /* ============================================================
@@ -1341,12 +2761,10 @@ document.getElementById('timerStop').addEventListener('click', () => {
    ============================================================ */
 renderToday();
 
-// Service worker for PWA install (минимальный — без push)
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
 
-// Re-render today если день сменился пока приложение было открыто
 let lastDate = ymd(new Date());
 setInterval(() => {
   const now = ymd(new Date());
