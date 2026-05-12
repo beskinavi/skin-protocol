@@ -3327,7 +3327,7 @@ function getScheduleLabel(pill) {
 }
 
 const DAY_NAMES_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const DAY_NAMES_SHORT = ['ВС','ПН','ВТ','СР','ЧТ','ПТ','СБ'];
+const DAY_NAMES_SHORT = ['Su','Mo','Tu','We','Th','Fr','Sa'];
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 /* ============================================================
@@ -3438,7 +3438,7 @@ let selectedDate = ymd(new Date());
 function isToday(dateStr) { return dateStr === ymd(new Date()); }
 
 // Short weekday names (Mon-first display order, but JS getDay() 0=Sun)
-const DAY_SHORT = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+const DAY_SHORT = ['Su','Mo','Tu','We','Th','Fr','Sa'];
 // weekOffset tracks which week we're viewing (0 = current week, -1 = last week, etc.)
 let weekOffset = 0;
 
@@ -4319,7 +4319,7 @@ function renderCalendar() {
   const daysInMonth = lastDay.getDate();
 
   let html = '';
-  ['ПН','ВТ','СР','ЧТ','ПТ','СБ','ВС'].forEach(d => html += `<div class="dow">${d}</div>`);
+  ['Mo','Tu','We','Th','Fr','Sa','Su'].forEach(d => html += `<div class="dow">${d}</div>`);
 
   const prevLastDay = new Date(year, month, 0).getDate();
   for (let i = startWeekday - 1; i >= 0; i--) {
