@@ -918,6 +918,108 @@ body.is-today-screen .app-header { display: none; }
 .mood-btn.selected .mood-label { color: var(--green-dark); }
 
 /* ============================================================
+   PILLS DAILY SCREEN
+   ============================================================ */
+.pills-daily-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 6px;
+}
+.pills-daily-title {
+  font-size: 20px; font-weight: 700; color: var(--ink);
+  letter-spacing: -0.025em; flex: 1;
+}
+.pills-daily-date {
+  font-size: 12px; color: var(--ink-faint);
+  margin-bottom: 20px;
+}
+.pills-daily-progress {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.pills-daily-progress-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-2);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.pills-daily-progress-fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 100px;
+  transition: width .4s ease;
+}
+.pills-daily-progress-label {
+  font-size: 13px; font-weight: 700;
+  color: var(--ink); white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
+}
+.pill-daily-card {
+  background: var(--surface);
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: transform .12s, background .2s;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.pill-daily-card:active { transform: scale(0.97); }
+.pill-daily-card.taken {
+  background: linear-gradient(135deg, #e8f5ee 0%, #eef9f2 100%);
+}
+.pill-daily-card.not-due {
+  opacity: 0.5; cursor: default;
+}
+.pill-daily-icon {
+  width: 46px; height: 46px;
+  border-radius: 14px;
+  background: var(--bg-2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.pill-daily-card.taken .pill-daily-icon {
+  background: rgba(255,255,255,0.7);
+}
+.pill-daily-info { flex: 1; }
+.pill-daily-name {
+  font-size: 15px; font-weight: 700;
+  color: var(--ink); letter-spacing: -0.01em;
+}
+.pill-daily-note {
+  font-size: 12px; color: var(--ink-faint);
+  margin-top: 2px; line-height: 1.3;
+}
+.pill-daily-check {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  background: transparent;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all .2s ease;
+}
+.pill-daily-card.taken .pill-daily-check {
+  background: var(--green);
+  border-color: var(--green);
+  color: white;
+  font-size: 14px;
+}
+.pill-daily-card.not-due .pill-daily-check {
+  border-color: var(--line-soft);
+}
+
+/* ============================================================
    PILLS / SUPPLEMENTS — calm 2-column grid
    ============================================================ */
 .pills-section { margin-top: 24px; margin-bottom: 4px; }
@@ -2971,7 +3073,7 @@ body.is-today-screen .app-header { display: none; }
      SCREEN: ROUTINES
      ============================================================ -->
 <section class="screen" id="screen-routines">
-  <div class="routines-header">
+  <div class="routines-header" id="routinesHeader">
     <div class="rh-left">
       <div class="rh-title">Routines</div>
       <div class="rh-sub" id="routinesDateSub">—</div>
@@ -3081,6 +3183,14 @@ body.is-today-screen .app-header { display: none; }
   </div>
 </section>
 
+
+<!-- ============================================================
+     SCREEN: PILLS DAILY (opened from Today → Pills card)
+     ============================================================ -->
+<section class="screen" id="screen-pills-daily">
+  <div id="pillsDailyContent"></div>
+</section>
+
 <!-- ============================================================
      SCREEN: TRACKERS (pills + sport + office, collapsible)
      ============================================================ -->
@@ -3156,10 +3266,7 @@ body.is-today-screen .app-header { display: none; }
      SCREEN: SPORT
      ============================================================ -->
 <section class="screen sport-screen" id="screen-sport">
-  <div class="pills-tab-summary">
-    <h2>Sport</h2>
-    <div class="sub" id="sportTabSummary"></div>
-  </div>
+  <div id="sportHeaderArea"></div>
   <div id="sportHistoryFull"></div>
 </section>
 
@@ -3869,13 +3976,28 @@ function renderRoutinesScreen() {
   if (c.am.length !== am.length) c.am = new Array(am.length).fill(false);
   if (c.pm.length !== pm.length) c.pm = new Array(pm.length).fill(false);
 
-  // Header
+  // Header — pills-style when opened from Today, standard otherwise
   const d = parseYmd(selectedDate);
   const dateLabel = `${DAY_NAMES_FULL[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()].toLowerCase()}`;
-  const subEl = document.getElementById('routinesDateSub');
-  if (subEl) subEl.textContent = isToday(selectedDate) ? 'Today' : dateLabel;
-  const phaseEl = document.getElementById('routinesPhasePill');
-  if (phaseEl) phaseEl.textContent = `${phase.name} · Day ${dayInPhase}`;
+
+  const headerEl = document.getElementById('routinesHeader');
+  if (headerEl) {
+    if (openedFromToday) {
+      headerEl.innerHTML = `
+        <div class="pills-daily-header">
+          <button class="wk-back-btn" onclick="navigateToScreen('today', renderToday)">←</button>
+          <div class="pills-daily-title">Routines</div>
+        </div>
+        <div class="pills-daily-date">${dateLabel}</div>`;
+    } else {
+      headerEl.innerHTML = `
+        <div class="rh-left">
+          <div class="rh-title">Routines</div>
+          <div class="rh-sub">${isToday(selectedDate) ? 'Today' : dateLabel}</div>
+        </div>
+        <div class="rh-phase" id="routinesPhasePill">${phase.name} · Day ${dayInPhase}</div>`;
+    }
+  }
 
   // Segmented control state
   document.querySelectorAll('.seg-btn[data-rperiod]').forEach(b => {
@@ -4254,6 +4376,64 @@ function pillCardHtml(p, dateStr) {
     </div>
   `;
 }
+
+function renderPillsDaily() {
+  const el = document.getElementById('pillsDailyContent');
+  if (!el) return;
+
+  const date = selectedDate;
+  const viewDate = parseYmd(date);
+  const MONTH_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const DAY_EN   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const dateLabel = `${DAY_EN[viewDate.getDay()]}, ${viewDate.getDate()} ${MONTH_EN[viewDate.getMonth()]}`;
+
+  const duePills  = PILLS.filter(p => isPillDay(p, date));
+  const taken     = duePills.filter(p => (pillsData[date] || {})[p.id]).length;
+  const pct       = duePills.length ? Math.round((taken / duePills.length) * 100) : 0;
+
+  const cards = PILLS.map(p => {
+    const isDue  = isPillDay(p, date);
+    const isTaken = !!(pillsData[date] || {})[p.id];
+    return `
+      <div class="pill-daily-card ${isTaken ? 'taken' : ''} ${!isDue ? 'not-due' : ''}"
+           data-pill="${p.id}" data-due="${isDue ? 1 : 0}">
+        <div class="pill-daily-icon">${p.icon}</div>
+        <div class="pill-daily-info">
+          <div class="pill-daily-name">${p.name}</div>
+          <div class="pill-daily-note">${isDue ? p.note : 'Not due today'}</div>
+        </div>
+        <div class="pill-daily-check">${isTaken ? '✓' : ''}</div>
+      </div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="pills-daily-header">
+      <button class="wk-back-btn" onclick="navigateToScreen('today', renderToday)">←</button>
+      <div class="pills-daily-title">Pills</div>
+    </div>
+    <div class="pills-daily-date">${dateLabel}</div>
+
+    <div class="pills-daily-progress">
+      <div class="pills-daily-progress-bar">
+        <div class="pills-daily-progress-fill" style="width:${pct}%"></div>
+      </div>
+      <div class="pills-daily-progress-label">${taken}/${duePills.length} taken</div>
+    </div>
+
+    ${cards}
+    <div style="height:40px;"></div>`;
+
+  // tap to toggle
+  el.querySelectorAll('.pill-daily-card[data-due="1"]').forEach(card => {
+    card.addEventListener('click', () => {
+      togglePill(date, card.dataset.pill);
+      renderPillsDaily();
+      renderToday(); // keep qa-card status fresh
+    });
+  });
+}
+
+
 
 function renderPhotoWidget(today) {
   const next = getNextPhotoDate(today);
@@ -4722,12 +4902,12 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
     document.getElementById(`screen-${target}`).classList.add('active');
     btn.classList.add('active');
     document.body.classList.toggle('is-today-screen', target === 'today');
-    if (target === 'today') renderToday();
-    if (target === 'routines') renderRoutinesScreen();
-    if (target === 'calendar') renderCalendar();
-    if (target === 'log') renderLog();
-    if (target === 'pills') renderPillsHistory();
-    if (target === 'sport') renderSportScreen();
+    if (target === 'today') { openedFromToday = false; renderToday(); }
+    if (target === 'routines') { openedFromToday = false; renderRoutinesScreen(); }
+    if (target === 'calendar') { openedFromToday = false; renderCalendar(); }
+    if (target === 'log') { openedFromToday = false; renderLog(); }
+    if (target === 'pills') { openedFromToday = false; renderPillsHistory(); }
+    if (target === 'sport') { openedFromToday = false; renderSportScreen(); }
     window.scrollTo(0, 0);
   });
 });
@@ -4744,13 +4924,18 @@ function navigateToScreen(screenId, renderFn) {
 }
 
 // Quick access cards
+let openedFromToday = false; // tracks if current screen was opened from Today qa-cards
+
 document.getElementById('qaRoutines').addEventListener('click', () => {
+  openedFromToday = true;
   navigateToScreen('routines', renderRoutinesScreen);
 });
 document.getElementById('qaPills').addEventListener('click', () => {
-  navigateToScreen('pills', renderPillsHistory);
+  openedFromToday = true;
+  navigateToScreen('pills-daily', renderPillsDaily);
 });
 document.getElementById('qaActivity').addEventListener('click', () => {
+  openedFromToday = true;
   navigateToScreen('sport', renderSportScreen);
 });
 
@@ -4920,9 +5105,32 @@ let wkActiveExId = null;
 // ── Render Sport Screen (top-level)
 function renderSportScreen() {
   const el = document.getElementById('sportHistoryFull');
-  const header = document.getElementById('sportTabSummary');
   if (!el) return;
-  if (header) header.textContent = '';
+
+  // Header — pills-style when opened from Today, standard green hero otherwise
+  const headerArea = document.getElementById('sportHeaderArea');
+  if (headerArea) {
+    const today = ymd(new Date());
+    const viewDate = parseYmd(today);
+    const MONTH_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const DAY_EN   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const dateLabel = `${DAY_EN[viewDate.getDay()]}, ${viewDate.getDate()} ${MONTH_EN[viewDate.getMonth()]}`;
+
+    if (openedFromToday) {
+      headerArea.innerHTML = `
+        <div class="pills-daily-header">
+          <button class="wk-back-btn" onclick="navigateToScreen('today', renderToday)">←</button>
+          <div class="pills-daily-title">Activity</div>
+        </div>
+        <div class="pills-daily-date">${dateLabel}</div>`;
+    } else {
+      headerArea.innerHTML = `
+        <div class="pills-tab-summary">
+          <h2>Sport</h2>
+          <div class="sub" id="sportTabSummary"></div>
+        </div>`;
+    }
+  }
 
   el.innerHTML = `
     <div class="wk-tabs">
